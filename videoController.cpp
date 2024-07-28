@@ -1,6 +1,6 @@
 #include "videoController.h"
 
-
+// {"ID": [1, 2, 3], "link":"https://www.twitch.tv/rivers_gg_waitingroom"}
 
 VideoController::VideoController(QObject *parent, const char *hostName, const uint16_t port, const char *userName, const char* password):
     QObject( parent ),
@@ -22,7 +22,11 @@ VideoController::VideoController(QObject *parent, const char *hostName, const ui
 
     client->connectToHost();
     // subscribe topic
-    setLink(defaultLink);
+    const std::string defaultStdLink = defaultLink.toStdString();
+    QString currentQuality = getQuality();
+    QString newM3u8DefaultLink = parseM3u8Url(defaultStdLink , currentQuality.toStdString());
+
+    setLink(newM3u8DefaultLink );
 
 }
 

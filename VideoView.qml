@@ -17,7 +17,10 @@ Item {
             autoPlay: true
             // bufferSize: 50000
             // onErrorOccurred: error => console.log('Error occurred:', errorString, error)
-            onMediaStatusChanged: console.log("Media status changed:", player.mediaStatus)
+            onMediaStatusChanged: {
+                console.log("Media status changed:", player.mediaStatus);
+                console.log("Buffer progress: ", player.bufferProgress);
+            }
             onSourceChanged: {
                 player.play();
             }

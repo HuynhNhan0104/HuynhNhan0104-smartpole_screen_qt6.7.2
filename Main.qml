@@ -8,6 +8,7 @@ Window {
     width: 1920
     height: 1080
     visible: true
+    visibility:"FullScreen"
     title: qsTr("Hello World")
     // color:"#1d1d35"
 /*-------------------------Serial control---------------------------------*/

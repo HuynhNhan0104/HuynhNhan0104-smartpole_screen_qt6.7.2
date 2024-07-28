@@ -68,7 +68,7 @@ private:
     QList<QMqttTopicFilter> topics;
     QList<QMqttSubscription*> subcriptionsManager;
     QMqttClient* client = nullptr;
-    QString defaultLink = QString("https://live4.thvli.vn/Ao-O3eV678ehY8Riwr6BTg/1721556483/thvli/thvl1-abr/playlist.m3u8");
+    QString defaultLink = QString("https://www.thvli.vn/live/thvl1-hd");
     QString m_link;
 };
 
