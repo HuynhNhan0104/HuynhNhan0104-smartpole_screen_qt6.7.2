@@ -1,4 +1,4 @@
-git#include <QGuiApplication>
+#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "dashboardController.h"

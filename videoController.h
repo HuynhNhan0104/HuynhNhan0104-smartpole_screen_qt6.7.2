@@ -64,7 +64,7 @@ signals:
 private:
 
     // quality in twitch is "160p", "360p", "480p" , "720p", "1080p", "worst" and "best"
-    QString quality= QString("480p");
+    QString quality= QString("best");
     QList<QMqttTopicFilter> topics;
     QList<QMqttSubscription*> subcriptionsManager;
     QMqttClient* client = nullptr;
