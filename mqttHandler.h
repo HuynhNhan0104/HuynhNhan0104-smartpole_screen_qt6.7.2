@@ -10,11 +10,11 @@
 #include <QJsonValue>
 #include <cstdlib>
 
-class mqttHandler: public QObject
+class MqttHandler: public QObject
 {
     Q_OBJECT
 public:
-    explicit mqttHandler(
+    explicit MqttHandler(
         QObject* parent = nullptr,
         const char* hostName = nullptr,
         uint16_t port = 1880,
@@ -22,7 +22,7 @@ public:
         const char* password = nullptr
     );
 
-    ~mqttHandler();
+    ~MqttHandler();
 
     void onConnected();
     void onMessageRecieved(const QByteArray &message, const QMqttTopicName &topic);
@@ -38,6 +38,9 @@ public:
 
 
     void clearSubscriptionsManager();
+signals:
+
+    void recieveFromLinkTopic(const QByteArray &message);
 
 private:
     QList<QMqttTopicFilter> topics;

@@ -3,8 +3,10 @@
 // {"ID": [1, 2, 3], "link":"https://www.twitch.tv/rivers_gg_waitingroom"}
 
 VideoController::VideoController(QObject *parent):
+// , mqttHandler* mqtt_handler):
                                  // , const char *hostName, const uint16_t port, const char *userName, const char* password):
     QObject( parent )
+    // mqtt_handler(mqtt_handler)
     // client( new QMqttClient(this))
 {
     // client->setHostname(QString(hostName));
@@ -32,7 +34,7 @@ VideoController::VideoController(QObject *parent):
 }
 
 VideoController::~VideoController(){
-    qDebug()<< "MQTT Deleted \n";
+    qDebug()<< "video controller Deleted \n";
     // delete client;
     // clearSubscriptionsManager();
 }
@@ -206,4 +208,30 @@ void VideoController::setDefaultLink(const QString &newDefaultLink){
 
 QString VideoController::getDefaultLink(){
     return defaultLink;
+}
+
+void VideoController::onRecieveLinnk(const QByteArray &message)
+{
+    QJsonDocument messageJsonDoc = QJsonDocument::fromJson(message);
+    if (messageJsonDoc.isObject()) {
+        // convert document to Oject
+        QJsonObject messageJsonObj = messageJsonDoc.object();
+
+        // Get json value from key
+        QJsonValue recievedIDList = messageJsonObj["ID"];
+        QJsonValue recievedLink = messageJsonObj["link"];
+
+        // Convert type from json to appropriated value
+        QJsonArray IDList = recievedIDList.toArray();
+        QString qlink = recievedLink.toString();
+
+        // parse m3u8 file
+        const std::string stdLink = qlink.toStdString();
+        QString currentQuality = getQuality();
+        QString newM3u8Link = parseM3u8Url(stdLink, currentQuality.toStdString());
+        setLink(newM3u8Link);
+    }
+    else{
+        qWarning() << "[Warning] data recieved is not json \n" ;
+    }
 }

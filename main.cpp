@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include "mqttHandler.h"
 #include "dashboardController.h"
 #include "videoController.h"
 #include <QLoggingCategory>
@@ -17,6 +18,11 @@ int main(int argc, char *argv[])
     // second solution: create c++ object and offer its context for the qml engine(it manager all qml), next just use c++ object on qml file
 
 
+    // create mqtt handler
+    MqttHandler* mqttHandler  =  new MqttHandler(&app,"io.adafruit.com",1883,"NhanHuynh", "");
+    mqttHandler->addTopic("NhanHuynh/feeds/link");
+
+
     // supply  DashboardController object context to QML context
     // run in "TEST" OR "RUN" Mode
     DashboardController* dashboardController =  new DashboardController(&app,"/dev/ttyUSB0",9600,DashboardController::TEST);
@@ -29,6 +35,10 @@ int main(int argc, char *argv[])
     //add topic want to subcribe here
     // videoController->addTopic("NhanHuynh/feeds/link");
     engine.rootContext()->setContextProperty("VideoController", videoController);
+
+    // create connection between mqtt handler and videoController to revcieve message and update link
+    QObject::connect(mqttHandler,&MqttHandler::recieveFromLinkTopic, videoController, &VideoController::onRecieveLinnk);
+
 
 
     const QUrl url(QStringLiteral("qrc:/smartpole_screen/Main.qml"));

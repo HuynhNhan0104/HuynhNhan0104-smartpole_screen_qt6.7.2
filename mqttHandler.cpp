@@ -2,7 +2,7 @@
 
 
 
-mqttHandler::mqttHandler(QObject *parent, const char *hostName, uint16_t port, const char *userName, const char *password):
+MqttHandler::MqttHandler(QObject *parent, const char *hostName, uint16_t port, const char *userName, const char *password):
     QObject( parent ),
     client( new QMqttClient(this))
 {
@@ -10,57 +10,37 @@ mqttHandler::mqttHandler(QObject *parent, const char *hostName, uint16_t port, c
     client->setPort(quint16(port));
     client->setUsername(QString(userName));
     client->setPassword(QString(password));
-    connect(client,&QMqttClient::connected,this,&mqttHandler::onConnected);
-    connect(client,&QMqttClient::messageReceived,this,&mqttHandler::onMessageRecieved);
+    connect(client,&QMqttClient::connected,this,&MqttHandler::onConnected);
+    connect(client,&QMqttClient::messageReceived,this,&MqttHandler::onMessageRecieved);
     connect(client,&QMqttClient::errorChanged,this, [](QMqttClient::ClientError error) {
         qDebug()<<"[Error] "<< error << "\n";}
     );
     client->connectToHost();
 }
 
-mqttHandler::~mqttHandler()
+MqttHandler::~MqttHandler()
 {
     qDebug()<< "MQTT Deleted \n";
     delete client;
     clearSubscriptionsManager();
 }
 
-void mqttHandler::onConnected()
+void MqttHandler::onConnected()
 {
     subscribeAllTopic();
 }
 
-void mqttHandler::onMessageRecieved(const QByteArray &message, const QMqttTopicName &topic)
+void MqttHandler::onMessageRecieved(const QByteArray &message, const QMqttTopicName &topic)
 {
     qDebug()<<"[Recieve]:[from: "<< topic <<"]:[Data: "<< message <<"] \n";
     //json format {"ID": [1, 2, 3], "link":"file:///home/nhan/workspace/img/wave.mp4"}
     // or {"ID": [1, 2, 3], "link":"file:///home/nhan/workspace/img/sea.mp4"}
+    emit recieveFromLinkTopic(message);
 
-    QJsonDocument messageJsonDoc = QJsonDocument::fromJson(message);
-    if (messageJsonDoc.isObject()) {
-        // convert document to Oject
-        QJsonObject messageJsonObj = messageJsonDoc.object();
 
-        // Get json value from key
-        QJsonValue recievedIDList = messageJsonObj["ID"];
-        QJsonValue recievedLink = messageJsonObj["link"];
-
-        // Convert type from json to appropriated value
-        QJsonArray IDList = recievedIDList.toArray();
-        QString qlink = recievedLink.toString();
-
-        // parse m3u8 file
-        const std::string stdLink = qlink.toStdString();
-        // QString currentQuality = getQuality();
-        // QString newM3u8Link = parseM3u8Url(stdLink, currentQuality.toStdString());
-        // setLink(newM3u8Link);
-    }
-    else{
-        qWarning() << "[Warning] data recieved is not json \n" ;
-    }
 }
 
-void mqttHandler::subscribeAllTopic()
+void MqttHandler::subscribeAllTopic()
 {
     foreach(const QMqttTopicFilter &topic, topics){
         QMqttTopicFilter newTopic(topic);
@@ -76,19 +56,19 @@ void mqttHandler::subscribeAllTopic()
     }
 }
 
-void mqttHandler::addTopic(const char *topicName)
+void MqttHandler::addTopic(const char *topicName)
 {
     if(topicName != nullptr){
         topics.append(QMqttTopicFilter(topicName));
     }
 }
 
-void mqttHandler::addSubcriptionPointer(QMqttSubscription *newSubcription)
+void MqttHandler::addSubcriptionPointer(QMqttSubscription *newSubcription)
 {
     subcriptionsManager.append(newSubcription);
 }
 
-void mqttHandler::addTopicList(const char **topicNameList, const int &size)
+void MqttHandler::addTopicList(const char **topicNameList, const int &size)
 {
     if(topicNameList != nullptr){
         for(int i = 0; i < size; ++i){
@@ -97,7 +77,7 @@ void mqttHandler::addTopicList(const char **topicNameList, const int &size)
     }
 }
 
-void mqttHandler::clearSubscriptionsManager()
+void MqttHandler::clearSubscriptionsManager()
 {
     foreach(const QMqttSubscription* item, subcriptionsManager){
         delete item;

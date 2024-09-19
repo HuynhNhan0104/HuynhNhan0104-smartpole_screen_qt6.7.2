@@ -22,6 +22,7 @@ public:
 
     explicit VideoController(
         QObject* parent = nullptr
+        // mqttHandler* mqtt_handler = nullptr
         // const char* hostName = nullptr,
         // uint16_t port = 1880,
         // const char* userName = nullptr,
@@ -60,6 +61,8 @@ public:
     QString getDefaultLink();
 
 
+    void onRecieveLinnk(const QByteArray &message);
+
 signals:
     void LinkChanged();
 
@@ -70,7 +73,7 @@ private:
     QList<QMqttTopicFilter> topics;
     QList<QMqttSubscription*> subcriptionsManager;
     QMqttClient* client = nullptr;
-    QString defaultLink = QString("https://www.thvli.vn/live/thvl1-hd");
+    QString defaultLink = QString("https://www.youtube.com/watch?v=rKn4EQ3-Ns0");
     QString m_link;
 };
 
