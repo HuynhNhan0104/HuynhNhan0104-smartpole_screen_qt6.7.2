@@ -22,29 +22,8 @@ public:
 
     explicit VideoController(
         QObject* parent = nullptr
-        // mqttHandler* mqtt_handler = nullptr
-        // const char* hostName = nullptr,
-        // uint16_t port = 1880,
-        // const char* userName = nullptr,
-        // const char* password = nullptr
     );
     ~VideoController();
-
-    // void onConnected();
-    // void onMessageRecieved(const QByteArray &message, const QMqttTopicName &topic);
-    // // void onSubcribed(QMqttSubscription::SubscriptionState state);
-    // void subscribeAllTopic();
-
-
-
-
-    // void addTopic(const char* topicName);
-    // void addSubcriptionPointer(QMqttSubscription* newSubcription);
-    // void addTopicList(const char** topicNameList, const int &size);
-
-
-    // void clearSubscriptionsManager();
-
 
     QString getLink() const;
     void setLink(const QString &newLink);
@@ -70,9 +49,6 @@ private:
 
     // quality in twitch is "160p", "360p", "480p" , "720p", "1080p", "worst" and "best"
     QString quality= QString("best");
-    QList<QMqttTopicFilter> topics;
-    QList<QMqttSubscription*> subcriptionsManager;
-    QMqttClient* client = nullptr;
     QString defaultLink = QString("https://www.youtube.com/watch?v=rKn4EQ3-Ns0");
     QString m_link;
 };

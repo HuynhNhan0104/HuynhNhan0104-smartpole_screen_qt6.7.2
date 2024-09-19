@@ -31,7 +31,6 @@ int main(int argc, char *argv[])
     // supply VideoController  object context to QML context
     // default link when starting is : "https://live4.thvli.vn/Ao-O3eV678ehY8Riwr6BTg/1721556483/thvli/thvl1-abr/thvl111220/thvl1-480p/chunks.m3u8"
     VideoController* videoController =  new VideoController(&app);
-                                                           // ,"io.adafruit.com",1883,"NhanHuynh", "");
     //add topic want to subcribe here
     // videoController->addTopic("NhanHuynh/feeds/link");
     engine.rootContext()->setContextProperty("VideoController", videoController);
