@@ -7,10 +7,11 @@ VideoController::VideoController(QObject *parent):
 
 {
     const std::string defaultStdLink = defaultLink.toStdString();
-    QString currentQuality = getQuality();
-    QString newM3u8DefaultLink = parseM3u8Url(defaultStdLink , currentQuality.toStdString());
+    setMediaPlayerLink(defaultStdLink );
+    // QString currentQuality = getQuality();
+    // QString newM3u8DefaultLink = parseM3u8Url(defaultStdLink , currentQuality.toStdString());
 
-    setLink(newM3u8DefaultLink );
+    // setLink(newM3u8DefaultLink );
 
 }
 
@@ -64,6 +65,28 @@ void VideoController::setLink(const char* newLink)
     emit LinkChanged();
 }
 
+void VideoController::setLink(const std::string &newLink)
+{
+    QString newQString= QString::fromStdString(newLink);
+    if (m_link == newQString)
+        return;
+    m_link = newQString;
+    emit LinkChanged();
+}
+
+void VideoController::setMediaPlayerLink(const std::string &newLink)
+{
+    if (newLink.substr(0, 4) == "file") {
+        qDebug() << "link is local \n";
+        setLink(newLink);
+    } else {
+        qDebug() << "link is an stream \n";
+        QString currentQuality = getQuality();
+        QString newM3u8Link = parseM3u8Url(newLink, currentQuality.toStdString());
+        setLink(newM3u8Link);
+    }
+}
+
 
 void VideoController::setQuality(const char* newQuality){
     quality = QString(newQuality);
@@ -105,9 +128,8 @@ void VideoController::onRecieveLinnk(const QByteArray &message)
 
         // parse m3u8 file
         const std::string stdLink = qlink.toStdString();
-        QString currentQuality = getQuality();
-        QString newM3u8Link = parseM3u8Url(stdLink, currentQuality.toStdString());
-        setLink(newM3u8Link);
+        qDebug() << "link received: " << stdLink;
+        setMediaPlayerLink(stdLink);
     }
     else{
         qWarning() << "[Warning] data recieved is not json \n" ;

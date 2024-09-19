@@ -28,6 +28,9 @@ public:
     QString getLink() const;
     void setLink(const QString &newLink);
     void setLink(const char* newLink);
+    void setLink(const std::string &newLink);
+
+    void setMediaPlayerLink(const std::string &newLink);
     QString  getLastLink();
     QString parseM3u8Url(const std::string &url,const std::string &type);
 

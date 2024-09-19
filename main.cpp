@@ -20,6 +20,8 @@ int main(int argc, char *argv[])
 
     // create mqtt handler
     MqttHandler* mqttHandler  =  new MqttHandler(&app,"io.adafruit.com",1883,"NhanHuynh", "");
+
+
     mqttHandler->addTopic("NhanHuynh/feeds/link");
 
 

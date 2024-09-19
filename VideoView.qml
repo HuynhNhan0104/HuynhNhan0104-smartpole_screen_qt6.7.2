@@ -15,6 +15,7 @@ Item {
             videoOutput: videoOutput
             // audioOutput: AudioOutput {}
             autoPlay: true
+            loops: MediaPlayer.Infinite
             // bufferSize: 50000
             // onErrorOccurred: error => console.log('Error occurred:', errorString, error)
             onMediaStatusChanged: {
