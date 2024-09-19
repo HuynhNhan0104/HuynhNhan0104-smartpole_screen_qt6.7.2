@@ -9,6 +9,7 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <cstdlib>
+#include "mqttHandler.h"
 
 
 
@@ -19,28 +20,29 @@ class VideoController: public QObject
 public:
 
 
-    explicit VideoController(QObject* parent = nullptr,
-                const char* hostName = nullptr,
-                uint16_t port = 1880,
-                const char* userName = nullptr,
-                const char* password = nullptr
+    explicit VideoController(
+        QObject* parent = nullptr
+        // const char* hostName = nullptr,
+        // uint16_t port = 1880,
+        // const char* userName = nullptr,
+        // const char* password = nullptr
     );
     ~VideoController();
 
-    void onConnected();
-    void onMessageRecieved(const QByteArray &message, const QMqttTopicName &topic);
-    // void onSubcribed(QMqttSubscription::SubscriptionState state);
-    void subscribeAllTopic();
+    // void onConnected();
+    // void onMessageRecieved(const QByteArray &message, const QMqttTopicName &topic);
+    // // void onSubcribed(QMqttSubscription::SubscriptionState state);
+    // void subscribeAllTopic();
 
 
 
 
-    void addTopic(const char* topicName);
-    void addSubcriptionPointer(QMqttSubscription* newSubcription);
-    void addTopicList(const char** topicNameList, const int &size);
+    // void addTopic(const char* topicName);
+    // void addSubcriptionPointer(QMqttSubscription* newSubcription);
+    // void addTopicList(const char** topicNameList, const int &size);
 
 
-    void clearSubscriptionsManager();
+    // void clearSubscriptionsManager();
 
 
     QString getLink() const;
