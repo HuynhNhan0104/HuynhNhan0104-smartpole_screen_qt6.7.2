@@ -39,6 +39,8 @@ int main(int argc, char *argv[])
 
     // create connection between mqtt handler and videoController to revcieve message and update link
     QObject::connect(mqttHandler,&MqttHandler::recieveFromLinkTopic, videoController, &VideoController::onRecieveLinnk);
+    // create connection between mqtt handler and dashboardController to publist message of sensor to topic
+    QObject::connect(dashboardController,&DashboardController::publishDataToTopic, mqttHandler, &MqttHandler::publishSensorData);
 
 
 

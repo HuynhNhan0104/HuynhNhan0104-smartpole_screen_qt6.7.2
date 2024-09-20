@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QTimer>
 #include<QRandomGenerator>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QDateTime>
 
 
 #include "serial/serial_interface.h"
@@ -23,10 +26,14 @@ class DashboardController: public QObject
     Q_PROPERTY(float humidityValue READ getHumidityValue WRITE setHumidityValue NOTIFY humidityValueChanged FINAL)
     Q_PROPERTY(float noiseValue READ getNoiseValue WRITE setNoiseValue NOTIFY noiseValueChanged FINAL)
     Q_PROPERTY(float atmValue READ getAtmValue WRITE setAtmValue NOTIFY atmValueChanged FINAL)
-    Q_PROPERTY(float lightValue READ getLightValue WRITE setLightValue NOTIFY LightValueChanged FINAL)
+    Q_PROPERTY(float lightValue READ getLightValue WRITE setLightValue NOTIFY lightValueChanged FINAL)
+
+
+
     // uncomment bottom line if you using c++object to your qml
     // QML_ELEMENT
 public:
+
     enum MODE{
         TEST = 0,
         RUN
@@ -61,6 +68,8 @@ public:
     float getLightValue() const;
     void setLightValue(float newLightValue);
 
+    QByteArray exportDataToJsonObject();
+
 signals:
     void pm25ValueChanged();
     void pm10ValueChanged();
@@ -68,7 +77,8 @@ signals:
     void humidityValueChanged();
     void noiseValueChanged();
     void atmValueChanged();
-    void LightValueChanged();
+    void lightValueChanged();
+    void publishDataToTopic(const QByteArray &message);
 
 private:
 

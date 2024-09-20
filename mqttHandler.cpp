@@ -83,3 +83,19 @@ void MqttHandler::clearSubscriptionsManager()
         delete item;
     }
 }
+
+int MqttHandler::publish(const QString &topic, const QByteArray &message, int qos, bool retain)
+{
+    return client->publish(QMqttTopicName(topic), message, qos, retain);
+}
+
+void MqttHandler::publishSensorData(const QByteArray &message)
+{
+    if( !publish( TopicPublish, message, 0, true ) ){
+        qDebug() <<"PUBLISH SUCCESS" << message;
+    }
+    else{
+        qDebug() <<"PUBLISH FAIL" << message;
+    }
+
+}

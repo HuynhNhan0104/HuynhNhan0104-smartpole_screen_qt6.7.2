@@ -25,7 +25,7 @@ DashboardController::DashboardController(QObject *parent,const char* port, int b
 
      //just for testing ui
 
-    timer->start(5000); // 10000 milliseconds = 10 seconds
+    timer->start(30000); // 10000 milliseconds = 10 seconds
 }
 DashboardController::~DashboardController(){
     timer->stop();
@@ -46,6 +46,10 @@ void DashboardController::updateData(){
     setPm10Value(sensor->getValue(ODR_Interface::PM10));
     setNoiseValue(sensor->getValue(ODR_Interface::NOISE));
     setAtmValue(sensor->getValue(ODR_Interface::ATM));
+
+    QByteArray message = exportDataToJsonObject();
+
+    emit publishDataToTopic(message);
 }
 // Just for testing GUI
 void DashboardController::updateValue(){
@@ -55,6 +59,8 @@ void DashboardController::updateValue(){
     setPm10Value(QRandomGenerator::global()->bounded(0, 101));
     setNoiseValue(QRandomGenerator::global()->bounded(0, 101));
     setAtmValue(QRandomGenerator::global()->bounded(0, 101));
+    QByteArray message = exportDataToJsonObject();
+    emit publishDataToTopic(message);
 }
 
 /*
@@ -181,5 +187,26 @@ void DashboardController::setLightValue(float newLightValue)
     if (qFuzzyCompare(m_lightValue, newLightValue))
         return;
     m_lightValue = newLightValue;
-    emit LightValueChanged();
+    emit lightValueChanged();
+}
+
+QByteArray  DashboardController::exportDataToJsonObject()
+{
+    QJsonObject valueObject;
+    valueObject["ID"] = "1";
+    qint64 currentTimestamp = QDateTime::currentMSecsSinceEpoch();
+    valueObject["timestamp"] = currentTimestamp;
+
+    valueObject["pm2.5"] = getPm25Value();
+    valueObject["pm10"] = getPm10Value();
+    valueObject["temp"] = getTemparatureValue();
+    valueObject["humi"] = getHumidityValue();
+    valueObject["noise"] = getNoiseValue();
+    valueObject["atm"] = getAtmValue();
+
+
+    QJsonDocument jsonDoc(valueObject);
+    QByteArray dataJson = jsonDoc.toJson();
+    qDebug() << "data sending: " <<  dataJson ;
+    return dataJson;
 }

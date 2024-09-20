@@ -38,11 +38,14 @@ public:
 
 
     void clearSubscriptionsManager();
+    int publish(const QString &topic, const QByteArray &message, int qos, bool retain = true);
+    void publishSensorData(const QByteArray &message);
 signals:
 
     void recieveFromLinkTopic(const QByteArray &message);
 
 private:
+    QString TopicPublish = "NhanHuynh/feeds/fan";
     QList<QMqttTopicFilter> topics;
     QList<QMqttSubscription*> subcriptionsManager;
     QMqttClient* client = nullptr;
