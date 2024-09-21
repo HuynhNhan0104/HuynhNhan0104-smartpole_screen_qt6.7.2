@@ -20,13 +20,13 @@ class DashboardController: public QObject
     // Q_PROPERTY(float Value READ getValue WRITE setValue NOTIFY ValueChanged)
 
 
-    Q_PROPERTY(float pm25Value READ getPm25Value WRITE setPm25Value NOTIFY pm25ValueChanged FINAL)
-    Q_PROPERTY(float pm10Value READ getPm10Value WRITE setPm10Value NOTIFY pm10ValueChanged FINAL)
-    Q_PROPERTY(float temparatureValue READ getTemparatureValue WRITE setTemparatureValue NOTIFY temparatureValueChanged FINAL)
-    Q_PROPERTY(float humidityValue READ getHumidityValue WRITE setHumidityValue NOTIFY humidityValueChanged FINAL)
-    Q_PROPERTY(float noiseValue READ getNoiseValue WRITE setNoiseValue NOTIFY noiseValueChanged FINAL)
-    Q_PROPERTY(float atmValue READ getAtmValue WRITE setAtmValue NOTIFY atmValueChanged FINAL)
-    Q_PROPERTY(float lightValue READ getLightValue WRITE setLightValue NOTIFY lightValueChanged FINAL)
+    Q_PROPERTY(float pm25Value READ getPm25Value WRITE setPm25Value NOTIFY pm25ValueChanged )
+    Q_PROPERTY(float pm10Value READ getPm10Value WRITE setPm10Value NOTIFY pm10ValueChanged )
+    Q_PROPERTY(float temparatureValue READ getTemparatureValue WRITE setTemparatureValue NOTIFY temparatureValueChanged )
+    Q_PROPERTY(float humidityValue READ getHumidityValue WRITE setHumidityValue NOTIFY humidityValueChanged )
+    Q_PROPERTY(float noiseValue READ getNoiseValue WRITE setNoiseValue NOTIFY noiseValueChanged )
+    Q_PROPERTY(float atmValue READ getAtmValue WRITE setAtmValue NOTIFY atmValueChanged)
+    Q_PROPERTY(float lightValue READ getLightValue WRITE setLightValue NOTIFY lightValueChanged)
 
 
 

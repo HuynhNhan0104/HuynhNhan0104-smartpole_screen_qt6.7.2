@@ -207,6 +207,6 @@ QByteArray  DashboardController::exportDataToJsonObject()
 
     QJsonDocument jsonDoc(valueObject);
     QByteArray dataJson = jsonDoc.toJson();
-    qDebug() << "data sending: " <<  dataJson ;
+    // qDebug() << "data sending: " <<  dataJson ;
     return dataJson;
 }
