@@ -10,10 +10,10 @@ static uint64_t t_last;
 
 static uint64_t get_time_usec();
 static uint64_t get_time_msec();
-int serial_parse_char(uint8_t buf, rs485_rsp * mes);
-void *start_serial_interface_read_thread(void *args);
-void *start_gimbal_interface_write_thread(void *args);
-int combineBytesToInt(const uint8_t* bytes, size_t length);
+static int serial_parse_char(uint8_t buf, rs485_rsp * mes);
+static void *start_serial_interface_read_thread(void *args);
+static void *start_gimbal_interface_write_thread(void *args);
+static int combineBytesToInt(const uint8_t* bytes, size_t length);
 
 Serial_Interface::Serial_Interface(Serial_Port *serial_port, ODR_Interface *sensor){
     _serial_port = serial_port;

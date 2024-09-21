@@ -37,6 +37,7 @@ public:
 
     uint16_t get_msg_encode(uint8_t *msg, uint16_t add);
 
+    float getValue(uint16_t add, const float &value);
     float getValue(uint16_t add);
 
     void setValue(uint16_t add, const int &value);
@@ -45,7 +46,7 @@ public:
     ODR_Interface(uint8_t ID);
     ~ODR_Interface();
 private:
-    pthread_mutex_t _lock;
+    std::mutex _lock;
     float _value[MAX_ADD-MIN_ADD] = {0};
     uint8_t ID;
     

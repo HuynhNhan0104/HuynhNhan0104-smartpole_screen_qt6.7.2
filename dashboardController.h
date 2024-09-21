@@ -8,7 +8,7 @@
 #include <QJsonObject>
 #include <QDateTime>
 
-
+#include "serial/auto_connect.h"
 #include "serial/serial_interface.h"
 #include "serial/serial_port.h"
 #include "serial/rs485.h"
@@ -39,7 +39,7 @@ public:
         RUN
     };
 
-    explicit DashboardController(QObject *parent = nullptr, const char* port = "/dev/ttyUSB0", int baudrate = 9600, int mode = TEST);
+    explicit DashboardController(QObject *parent = nullptr, int baudrate = 9600, int mode = TEST);
     ~DashboardController();
 
 

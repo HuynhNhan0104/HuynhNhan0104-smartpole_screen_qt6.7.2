@@ -1,10 +1,13 @@
 #include "dashboardController.h"
 
-DashboardController::DashboardController(QObject *parent,const char* port, int baudrate, int mode):
+DashboardController::DashboardController(QObject *parent, int baudrate, int mode):
     QObject( parent )
 {
     // allocate mem for property (need to deallocate at the destructor)
-    serialPort = new Serial_Port(port,baudrate);
+    AutoConnect autoconnect{};
+    string port = autoconnect.get_uart_list();
+    printf("Got port %s\n",port.c_str());
+    serialPort = new Serial_Port(port.c_str(),baudrate);
     sensor = new ODR_Interface(0x15);
     serialInterface = new Serial_Interface(serialPort, sensor);
     timer = new QTimer(this);
@@ -29,8 +32,8 @@ DashboardController::DashboardController(QObject *parent,const char* port, int b
 }
 DashboardController::~DashboardController(){
     timer->stop();
-    // serialPort->stop();
-    // serialInterface->stop();
+    serialPort->stop();
+    serialInterface->stop();
     delete timer;
     delete serialPort;
     delete serialInterface;

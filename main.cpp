@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 
     // supply  DashboardController object context to QML context
     // run in "TEST" OR "RUN" Mode
-    DashboardController* dashboardController =  new DashboardController(&app,"/dev/ttyUSB0",9600,DashboardController::TEST);
+    DashboardController* dashboardController =  new DashboardController(&app,9600,DashboardController::TEST);
     engine.rootContext()->setContextProperty("DashboardController", dashboardController);
 
     // supply VideoController  object context to QML context

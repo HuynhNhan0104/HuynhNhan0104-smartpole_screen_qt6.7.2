@@ -38,9 +38,20 @@ void ODR_Interface::setValue(uint16_t add, const int &value){
         r_value /= 10;
     }
     DebugInfo("Set [%s] : %.2f",name_value[add-MIN_ADD] ,r_value);
-    pthread_mutex_lock(&_lock);
     _value[add-MIN_ADD] = r_value;
-    pthread_mutex_unlock(&_lock);
+}
+
+float ODR_Interface::getValue(uint16_t add, const float &value){
+    if (add < MIN_ADD || add >= MAX_ADD)
+    {
+        DebugError("ERROR: Address %u out of range %d - %d!",add ,MIN_ADD,MAX_ADD);
+        return INT32_MIN;
+    }
+    // return _value[add-MIN_ADD];
+
+    std::lock_guard<std::mutex> lock(_lock);
+    float return_value = _value[add-MIN_ADD];
+    return return_value;
 }
 
 float ODR_Interface::getValue(uint16_t add){
@@ -49,8 +60,7 @@ float ODR_Interface::getValue(uint16_t add){
         DebugError("ERROR: Address %u out of range %d - %d!",add ,MIN_ADD,MAX_ADD);
         return INT32_MIN;
     }
-    pthread_mutex_lock(&_lock);
+    std::lock_guard<std::mutex> lock(_lock);
     float return_value = _value[add-MIN_ADD];
-    pthread_mutex_unlock(&_lock);
     return return_value;
 }
