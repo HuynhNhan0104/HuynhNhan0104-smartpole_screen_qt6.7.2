@@ -53,6 +53,8 @@ private:
     // quality in twitch is "160p", "360p", "480p" , "720p", "1080p", "worst" and "best"
     QString quality= QString("best");
     QString defaultLink = QString("https://www.youtube.com/watch?v=rKn4EQ3-Ns0");
+    // QString defaultLink = QString("https://www.youtube.com/watch?v=rKn4EQ3-Ns0");
+    // {"ID": [1, 2, 3], "link":"udp://@192.168.196.76:1234?pkt_size=1316"}
     QString m_link;
 };
 
