@@ -36,12 +36,12 @@ Window {
 
 
     property var itemList: [
-        {tagName:"Temp",    measuredValue: DashboardController.temparatureValue, unit: "°C",      minLimit: 0,  maxLimit: 100,     lowerThreshold: 30,   upperThreshold: 70},
-        {tagName:"Humi",    measuredValue: DashboardController.humidityValue,    unit: "%",       minLimit: 0,  maxLimit: 100,     lowerThreshold: 30,   upperThreshold: 70},
-        {tagName:"PM2.5",   measuredValue: DashboardController.pm25Value,        unit: "µm/m3",   minLimit: 0,  maxLimit: 1000,    lowerThreshold: 300,  upperThreshold: 700},
-        {tagName:"PM10",    measuredValue: DashboardController.pm10Value,        unit: "µm/m3",   minLimit: 0,  maxLimit: 1000,    lowerThreshold: 300,  upperThreshold: 700},
+        {tagName:"Temp",    measuredValue: DashboardController.temparatureValue, unit: "°C",      minLimit: 0,  maxLimit: 50,     lowerThreshold: 25,   upperThreshold: 30},
+        {tagName:"Humi",    measuredValue: DashboardController.humidityValue,    unit: "%",       minLimit: 0,  maxLimit: 100,     lowerThreshold: 50,   upperThreshold: 80},
+        {tagName:"PM2.5",   measuredValue: DashboardController.pm25Value,        unit: "µm/m3",   minLimit: 0,  maxLimit: 200,    lowerThreshold: 12,  upperThreshold: 35},
+        {tagName:"PM10",    measuredValue: DashboardController.pm10Value,        unit: "µm/m3",   minLimit: 0,  maxLimit: 400,    lowerThreshold: 55,  upperThreshold: 155},
         {tagName:"Atm",     measuredValue: DashboardController.atmValue,         unit: "Kpa",     minLimit: 0,  maxLimit: 120,     lowerThreshold: 40,   upperThreshold: 100},
-        {tagName:"Noise",   measuredValue: DashboardController.noiseValue,       unit: "dB",      minLimit: 30, maxLimit: 130,     lowerThreshold: 60,   upperThreshold: 100}
+        {tagName:"Noise",   measuredValue: DashboardController.noiseValue,       unit: "dB",      minLimit: 0, maxLimit: 140,     lowerThreshold: 80,   upperThreshold: 120}
     ]
 
     Rectangle{

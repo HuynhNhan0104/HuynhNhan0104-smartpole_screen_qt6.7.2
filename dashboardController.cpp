@@ -56,11 +56,11 @@ void DashboardController::updateData(){
 }
 // Just for testing GUI
 void DashboardController::updateValue(){
-    setTemparatureValue(QRandomGenerator::global()->bounded(0, 101));
+    setTemparatureValue(QRandomGenerator::global()->bounded(0, 51));
     setHumidityValue(QRandomGenerator::global()->bounded(0, 101));
-    setPm25Value(QRandomGenerator::global()->bounded(0, 101));
-    setPm10Value(QRandomGenerator::global()->bounded(0, 101));
-    setNoiseValue(QRandomGenerator::global()->bounded(0, 101));
+    setPm25Value(QRandomGenerator::global()->bounded(0, 201));
+    setPm10Value(QRandomGenerator::global()->bounded(0, 401));
+    setNoiseValue(QRandomGenerator::global()->bounded(0, 141));
     setAtmValue(QRandomGenerator::global()->bounded(0, 101));
     QByteArray message = exportDataToJsonObject();
     emit publishDataToTopic(message);
