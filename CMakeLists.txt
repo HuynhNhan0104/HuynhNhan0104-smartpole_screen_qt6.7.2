@@ -29,6 +29,7 @@ qt_add_qml_module(appsmartpole_screen
         SOURCES
         QML_FILES VideoView.qml
         SOURCES mqttHandler.h mqttHandler.cpp
+        SOURCES httpHandler.h httpHandler.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

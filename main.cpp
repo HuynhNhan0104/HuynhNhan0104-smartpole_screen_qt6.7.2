@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "mqttHandler.h"
+#include "httpHandler.h"
 #include "dashboardController.h"
 #include "videoController.h"
 #include <QLoggingCategory>
@@ -20,9 +21,8 @@ int main(int argc, char *argv[])
 
     // create mqtt handler
     MqttHandler* mqttHandler  =  new MqttHandler(&app,"io.adafruit.com",1883,"NhanHuynh", "");
-
-
     mqttHandler->addTopic("NhanHuynh/feeds/link");
+
 
 
     // supply  DashboardController object context to QML context
@@ -37,11 +37,21 @@ int main(int argc, char *argv[])
     // videoController->addTopic("NhanHuynh/feeds/link");
     engine.rootContext()->setContextProperty("VideoController", videoController);
 
+    // create http handler
+    // supply  HttpHandler object context to QML context
+    HttpHandler* httpHandler = new HttpHandler(&app,"https://io.adafruit.com/api/v2/NhanHuynh/feeds/mask");
+    engine.rootContext()->setContextProperty("HttpHandler", httpHandler);
+
     // create connection between mqtt handler and videoController to revcieve message and update link
-    QObject::connect(mqttHandler,&MqttHandler::recieveFromLinkTopic, videoController, &VideoController::onRecieveLinnk);
+    QObject::connect(mqttHandler,&MqttHandler::recieveFromLinkTopic, videoController, &VideoController::onReceiveLinkFromMqtt);
     // create connection between mqtt handler and dashboardController to publist message of sensor to topic
     QObject::connect(dashboardController,&DashboardController::publishDataToTopic, mqttHandler, &MqttHandler::publishSensorData);
 
+    // create connection between http handler and videoController to publist message of sensor to topic
+    QObject::connect(httpHandler,&HttpHandler::receiveLinkFromRequest, videoController, &VideoController::onReceiveLinkFromHttp);
+
+
+    httpHandler->sendRequest();
 
 
     const QUrl url(QStringLiteral("qrc:/smartpole_screen/Main.qml"));

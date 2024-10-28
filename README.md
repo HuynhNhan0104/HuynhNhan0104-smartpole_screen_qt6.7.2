@@ -46,6 +46,8 @@ repository/
 ├── videoControl.cpp
 ├── mqttHandler.h
 ├── mqttHandler.cpp
+├── httpHandler.h
+├── httpHandler.cpp
 └── README.md
 ```
 * serial: low level interface using for reading value of sensor.
@@ -54,6 +56,7 @@ repository/
 * dashboardController.h and dashboardController.cpp: control behavior of the radial bar(reading data from sensor, update to the dashboard, sending data to server throught mqtt protocol)
 * videoControl.h and videoControl.cpp: control behavior of the media player(mqtt communitcation to update the source of player)
 * mqttHandler.h and mqttHandler.cpp: recieve command from CMS server and pushlish data of sensors.
+* httpHandler.h and httpHandler.cpp: make an request to CMS server to inform errors and get link again.
 ## MVC(model-view-controller)
 * Model: serial directory with contain interface to get data from sensor
 * View: *.qml file  which describe ui of each components.

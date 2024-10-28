@@ -90,6 +90,19 @@ void VideoController::setMediaPlayerLink(const std::string &newLink)
     }
 }
 
+// void VideoController::setMediaPlayerLink(const QString &link)
+// {
+//     const std::string newLink = link.toStdString();
+//     if (newLink.substr(0, 4) == "file") {
+//         qDebug() << "link is local \n";
+//         setLink(newLink);
+//     } else {
+//         qDebug() << "link is an stream \n";
+//         QString currentQuality = getQuality();
+//         QString newM3u8Link = parseM3u8Url(newLink, currentQuality.toStdString());
+//         setLink(newM3u8Link);
+//     }
+// }
 
 void VideoController::setQuality(const char* newQuality){
     quality = QString(newQuality);
@@ -114,7 +127,15 @@ QString VideoController::getDefaultLink(){
     return defaultLink;
 }
 
-void VideoController::onRecieveLinnk(const QByteArray &message)
+void VideoController::onReceiveLinkFromHttp(const QByteArray &message)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(message);
+    QJsonObject response = doc.object();
+    QString link = response["last_value"].toString();
+    qDebug() << "last link:" << link;
+    setMediaPlayerLink(link.toStdString());
+}
+void VideoController::onReceiveLinkFromMqtt(const QByteArray &message)
 {
     QJsonDocument messageJsonDoc = QJsonDocument::fromJson(message);
     if (messageJsonDoc.isObject()) {

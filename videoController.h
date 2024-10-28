@@ -31,6 +31,7 @@ public:
     void setLink(const std::string &newLink);
 
     void setMediaPlayerLink(const std::string &newLink);
+    // void setMediaPlayerLink(const QString &link);
     QString  getLastLink();
     QString parseM3u8Url(const std::string &url,const std::string &type);
 
@@ -43,7 +44,8 @@ public:
     QString getDefaultLink();
 
 
-    void onRecieveLinnk(const QByteArray &message);
+    void onReceiveLinkFromMqtt(const QByteArray &message);
+    void onReceiveLinkFromHttp(const QByteArray &message);
 
 signals:
     void LinkChanged();

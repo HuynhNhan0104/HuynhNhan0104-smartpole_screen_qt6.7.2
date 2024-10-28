@@ -127,6 +127,32 @@ Window {
         anchors.top: dashboard.bottom
         anchors.left: dashboard.left
         sourceLink: VideoController.link
+        onMediaStatusChanged: statusProcess(status)
+
+        function statusProcess (status){
+            if (status === MediaPlayer.InvalidMedia || status === MediaPlayer.EndOfMedia ){
+                HttpHandler.sendRequest();
+            }
+
+        }
+
+        // function request() {
+        //     const xhr = new XMLHttpRequest()
+        //     xhr.onreadystatechange = function() {
+        //         if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
+        //             print('HEADERS_RECEIVED')
+        //         } else if(xhr.readyState === XMLHttpRequest.DONE) {
+        //             print('DONE')
+        //             const response = JSON.parse(xhr.responseText.toString())
+        //             // Set JS object as model for listview
+        //             sourceLink = response.items
+        //         }
+        //     }
+        //     xhr.open("GET", HttpHandler.api)
+        //     xhr.send()
+        // }
+
+
     }
 
 
