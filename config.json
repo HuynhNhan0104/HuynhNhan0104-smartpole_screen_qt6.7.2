@@ -1,0 +1,11 @@
+{
+    "id":1,
+    "broker":"io.adafruit.com",
+    "port": 1883,
+    "user":"NhanHuynh",
+    "token":"",
+    "topic": "NhanHuynh/feeds/link",
+    "bitrate":9600,
+    "mode": 0,
+    "api": "https://io.adafruit.com/api/v2/NhanHuynh/feeds/mask"
+}

@@ -8,10 +8,73 @@
 #include <QLoggingCategory>
 #include<QtMultimedia/qmediaplayer.h>
 #include<QtMultimedia/qmediadevices.h>
+#include <QFile>
+#include <QDir>
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+    QStringList args = app.arguments();
+    // argument containt
+    // [0] name of file
+    // [1] mqtt broker
+    // [2] mqtt port
+    // [3] mqtt username
+    // [4] token mqtt
+    // [5] topic to subcribe link
+    // [6] serial bitrate
+    // [7] serial mode(test or run)
+    // [8] api error request
+    int id; //= 0;
+    QString broker; // = "io.adafruit.com";
+    int port;// 1883;
+    QString user;// = "NhanHuynh";
+    QString token; // = "";
+    QString topic; //= "NhanHuynh/feeds/link";
+    int bitrate;// = 9600;
+    int mode;// = 0;
+    QString api;// = "https://io.adafruit.com/api/v2/NhanHuynh/feeds/mask";
+
+
+    if (args.count() < 2)
+    {
+        std::cerr << "argument required" << endl;
+        // return 1;
+    } else {
+        QFile file(args[1]);
+        // QFile file("../../config.json");
+        // qDebug() << "Current working directory:" << QDir::currentPath();
+        qDebug() << "file config: " << args[1];
+        if (file.open(QIODevice::ReadOnly)) {
+            // file.open(QIODevice::ReadOnly);
+            QByteArray data = file.readAll();
+            file.close();
+
+            // Phân tích dữ liệu JSON
+            QJsonDocument jsonDoc(QJsonDocument::fromJson(data));
+            QJsonObject jsonObj = jsonDoc.object();
+
+            id      =   jsonObj["id"].toInt();
+            broker  =   jsonObj["broker"].toString();
+            port    =   jsonObj["port"].toInt();
+            user    =   jsonObj["user"].toString();
+            token   =   jsonObj["token"].toString();
+            topic   =   jsonObj["topic"].toString();
+            bitrate =   jsonObj["bitrate"].toInt();
+            mode    =   jsonObj["mode"].toInt();
+            api     =   jsonObj["api"].toString();
+            // qDebug() << "id: " << id;
+            // qDebug() << "broker:"  << broker;
+            // qDebug() << "user: "  << user;
+            // qDebug() << "port: " << port;
+            // qDebug() << "token: "<< token;
+            // qDebug() << "topic: " << topic;
+        } else {
+            qDebug() << "Couldn't open file, using default config";
+        }
+    }
+
+
 
     QQmlApplicationEngine engine;
     // fist solution: load c++ object to qml file and use, you need add marcro QML_ELEMEMT on constructor of your object
@@ -20,14 +83,14 @@ int main(int argc, char *argv[])
 
 
     // create mqtt handler
-    MqttHandler* mqttHandler  =  new MqttHandler(&app,"io.adafruit.com",1883,"NhanHuynh", "");
-    mqttHandler->addTopic("NhanHuynh/feeds/link");
+    MqttHandler* mqttHandler  =  new MqttHandler(&app,broker,port,user,token);
+    mqttHandler->addTopic(topic);
 
 
 
     // supply  DashboardController object context to QML context
     // run in "TEST" OR "RUN" Mode
-    DashboardController* dashboardController =  new DashboardController(&app,9600,DashboardController::TEST);
+    DashboardController* dashboardController =  new DashboardController(&app,bitrate,mode ? (DashboardController::RUN):(DashboardController::TEST));
     engine.rootContext()->setContextProperty("DashboardController", dashboardController);
 
     // supply VideoController  object context to QML context
@@ -39,7 +102,7 @@ int main(int argc, char *argv[])
 
     // create http handler
     // supply  HttpHandler object context to QML context
-    HttpHandler* httpHandler = new HttpHandler(&app,"https://io.adafruit.com/api/v2/NhanHuynh/feeds/mask");
+    HttpHandler* httpHandler = new HttpHandler(&app,api);
     engine.rootContext()->setContextProperty("HttpHandler", httpHandler);
 
     // create connection between mqtt handler and videoController to revcieve message and update link

@@ -16,10 +16,10 @@ class MqttHandler: public QObject
 public:
     explicit MqttHandler(
         QObject* parent = nullptr,
-        const char* hostName = nullptr,
+        QString hostName = "",
         uint16_t port = 1880,
-        const char* userName = nullptr,
-        const char* password = nullptr
+        QString userName = "",
+        QString  password = ""
     );
 
     ~MqttHandler();
@@ -33,6 +33,8 @@ public:
 
 
     void addTopic(const char* topicName);
+    void addTopic(const QString &topicName);
+    // void addTopic(std::string topicName);
     void addSubcriptionPointer(QMqttSubscription* newSubcription);
     void addTopicList(const char** topicNameList, const int &size);
 

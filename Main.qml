@@ -127,10 +127,8 @@ Window {
         anchors.top: dashboard.bottom
         anchors.left: dashboard.left
         sourceLink: VideoController.link
-        onMediaStatusChanged: statusProcess(status)
-
-        function statusProcess (status){
-            if (status === MediaPlayer.InvalidMedia || status === MediaPlayer.EndOfMedia ){
+        onMediaStatusChanged:{
+            if (videoView.mediastatus === MediaPlayer.InvalidMedia || videoView.mediastatus === MediaPlayer.EndOfMedia ){
                 HttpHandler.sendRequest();
             }
 

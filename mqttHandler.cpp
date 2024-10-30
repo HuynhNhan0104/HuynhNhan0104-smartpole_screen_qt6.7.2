@@ -2,14 +2,14 @@
 
 
 
-MqttHandler::MqttHandler(QObject *parent, const char *hostName, uint16_t port, const char *userName, const char *password):
+MqttHandler::MqttHandler(QObject *parent, QString hostName, uint16_t port, QString  userName,QString password):
     QObject( parent ),
     client( new QMqttClient(this))
 {
-    client->setHostname(QString(hostName));
+    client->setHostname(hostName);
     client->setPort(quint16(port));
-    client->setUsername(QString(userName));
-    client->setPassword(QString(password));
+    client->setUsername(userName);
+    client->setPassword(password);
     connect(client,&QMqttClient::connected,this,&MqttHandler::onConnected);
     connect(client,&QMqttClient::messageReceived,this,&MqttHandler::onMessageRecieved);
     connect(client,&QMqttClient::errorChanged,this, [](QMqttClient::ClientError error) {
@@ -59,6 +59,12 @@ void MqttHandler::subscribeAllTopic()
 void MqttHandler::addTopic(const char *topicName)
 {
     if(topicName != nullptr){
+        topics.append(QMqttTopicFilter(topicName));
+    }
+}
+void MqttHandler::addTopic(const QString& topicName)
+{
+    if(topicName != ""){
         topics.append(QMqttTopicFilter(topicName));
     }
 }

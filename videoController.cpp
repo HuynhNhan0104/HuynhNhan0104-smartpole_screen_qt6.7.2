@@ -10,7 +10,8 @@ VideoController::VideoController(QObject *parent):
     // setLink("http://192.168.196.76:5000/video_feed");
     // setLink("http://192.168.196.76:5000/video_feed");
 
-    setMediaPlayerLink(defaultStdLink);
+    // setMediaPlayerLink(defaultStdLink);
+    setLink(defaultStdLink);
     // QString currentQuality = getQuality();
     // QString newM3u8DefaultLink = parseM3u8Url(defaultStdLink , currentQuality.toStdString());
 
@@ -133,7 +134,8 @@ void VideoController::onReceiveLinkFromHttp(const QByteArray &message)
     QJsonObject response = doc.object();
     QString link = response["last_value"].toString();
     qDebug() << "last link:" << link;
-    setMediaPlayerLink(link.toStdString());
+    // setMediaPlayerLink(link.toStdString());
+    setLink(link);
 }
 void VideoController::onReceiveLinkFromMqtt(const QByteArray &message)
 {
@@ -153,7 +155,8 @@ void VideoController::onReceiveLinkFromMqtt(const QByteArray &message)
         // parse m3u8 file
         const std::string stdLink = qlink.toStdString();
         qDebug() << "link received: " << stdLink;
-        setMediaPlayerLink(stdLink);
+        // setMediaPlayerLink(stdLink);
+        setLink(stdLink);
     }
     else{
         qWarning() << "[Warning] data recieved is not json \n" ;
