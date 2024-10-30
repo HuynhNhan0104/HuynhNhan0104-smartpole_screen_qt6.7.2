@@ -83,6 +83,11 @@ void MqttHandler::addTopicList(const char **topicNameList, const int &size)
     }
 }
 
+void MqttHandler::setPublishTopic(const QString& pubtopic)
+{
+    this->publishTopic = pubtopic;
+}
+
 void MqttHandler::clearSubscriptionsManager()
 {
     foreach(const QMqttSubscription* item, subcriptionsManager){
@@ -97,7 +102,7 @@ int MqttHandler::publish(const QString &topic, const QByteArray &message, int qo
 
 void MqttHandler::publishSensorData(const QByteArray &message)
 {
-    if( !publish( TopicPublish, message, 0, true ) ){
+    if( !publish( publishTopic, message, 0, true ) ){
         qDebug() <<"PUBLISH SUCCESS" << message;
     }
     else{

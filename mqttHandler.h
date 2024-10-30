@@ -37,7 +37,7 @@ public:
     // void addTopic(std::string topicName);
     void addSubcriptionPointer(QMqttSubscription* newSubcription);
     void addTopicList(const char** topicNameList, const int &size);
-
+    void setPublishTopic(const QString &pubtopic);
 
     void clearSubscriptionsManager();
     int publish(const QString &topic, const QByteArray &message, int qos, bool retain = true);
@@ -47,7 +47,7 @@ signals:
     void recieveFromLinkTopic(const QByteArray &message);
 
 private:
-    QString TopicPublish = "NhanHuynh/feeds/fan";
+    QString publishTopic = "NhanHuynh/feeds/fan";
     QList<QMqttTopicFilter> topics;
     QList<QMqttSubscription*> subcriptionsManager;
     QMqttClient* client = nullptr;

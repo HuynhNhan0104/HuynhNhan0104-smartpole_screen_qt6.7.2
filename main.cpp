@@ -30,7 +30,8 @@ int main(int argc, char *argv[])
     int port;// 1883;
     QString user;// = "NhanHuynh";
     QString token; // = "";
-    QString topic; //= "NhanHuynh/feeds/link";
+    QString subTopic; //= "NhanHuynh/feeds/link";
+    QString pubTopic; //= "NhanHuynh/feeds/link";
     int bitrate;// = 9600;
     int mode;// = 0;
     QString api;// = "https://io.adafruit.com/api/v2/NhanHuynh/feeds/mask";
@@ -59,7 +60,8 @@ int main(int argc, char *argv[])
             port    =   jsonObj["port"].toInt();
             user    =   jsonObj["user"].toString();
             token   =   jsonObj["token"].toString();
-            topic   =   jsonObj["topic"].toString();
+            subTopic   =   jsonObj["subTopic"].toString();
+            pubTopic   =   jsonObj["pubTopic"].toString();
             bitrate =   jsonObj["bitrate"].toInt();
             mode    =   jsonObj["mode"].toInt();
             api     =   jsonObj["api"].toString();
@@ -68,7 +70,7 @@ int main(int argc, char *argv[])
             // qDebug() << "user: "  << user;
             // qDebug() << "port: " << port;
             // qDebug() << "token: "<< token;
-            // qDebug() << "topic: " << topic;
+            // qDebug() << "subTopic: " << subTopic;
         } else {
             qDebug() << "Couldn't open file, using default config";
         }
@@ -84,7 +86,8 @@ int main(int argc, char *argv[])
 
     // create mqtt handler
     MqttHandler* mqttHandler  =  new MqttHandler(&app,broker,port,user,token);
-    mqttHandler->addTopic(topic);
+    mqttHandler->addTopic(subTopic);
+    mqttHandler->setPublishTopic(pubTopic);
 
 
 
