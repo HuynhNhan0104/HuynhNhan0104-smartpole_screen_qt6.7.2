@@ -1,10 +1,12 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.19)
 
 project(smartpole_screen VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+
+set(Qt6_DIR )
 
 find_package(Qt6 6.4 REQUIRED COMPONENTS Quick  Mqtt Multimedia)
 find_package(Threads)
@@ -30,7 +32,7 @@ qt_add_qml_module(appsmartpole_screen
         QML_FILES VideoView.qml
         SOURCES mqttHandler.h mqttHandler.cpp
         SOURCES httpHandler.h httpHandler.cpp
-        QML_FILES config.json
+        # QML_FILES config.jso
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -54,6 +56,14 @@ target_link_libraries(appsmartpole_screen
 include(GNUInstallDirs)
 install(TARGETS appsmartpole_screen
     BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
+qt_generate_deploy_qml_app_script(
+    TARGET appsmartpole_screen
+    FILENAME_VARIABLE deploy_script
+    NO_UNSUPPORTED_PLATFORM_ERROR
+    DEPLOY_USER_QML_MODULES_ON_UNSUPPORTED_PLATFORM
+)
+install(SCRIPT ${deploy_script})
