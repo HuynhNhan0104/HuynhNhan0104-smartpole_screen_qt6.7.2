@@ -1,13 +1,13 @@
 {
-    "id": 1,
-    "stream_id": 5,
-    "user": "GutD",
+    "api": "https://aeee-14-241-225-123.ngrok-free.app/get/linkm3u8",
+    "bitrate": 9600,
     "broker": "io.adafruit.com",
+    "id": 1,
+    "mode": 0,
     "port": 1883,
     "pubTopic": "GutD/feeds/fan",
+    "stream_id": 1,
     "subTopic": "GutD/feeds/live-stream",
     "token": "",
-    "bitrate": 9600,
-    "mode": 0,
-    "api": "https://io.adafruit.com/api/v2/NhanHuynh/feeds/mask"
+    "user": "GutD"
 }

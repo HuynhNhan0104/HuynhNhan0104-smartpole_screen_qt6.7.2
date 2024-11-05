@@ -138,7 +138,7 @@ QString VideoController::getDefaultLink(){
 void VideoController::onReceiveLinkFromHttp(const QByteArray &message){
     QJsonDocument doc = QJsonDocument::fromJson(message);
     QJsonObject response = doc.object();
-    QString link = response["last_value"].toString();
+    QString link = response["link"].toString();
     qDebug() << "last link:" << link;
     // setMediaPlayerLink(link.toStdString());
     setLink(link);

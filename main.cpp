@@ -113,8 +113,7 @@ int main(int argc, char *argv[])
 
     // create connection between http handler and videoController to publist message of sensor to topic
     QObject::connect(httpHandler,&HttpHandler::receiveLinkFromRequest, videoController, &VideoController::onReceiveLinkFromHttp);
-
-
+    httpHandler->sendRequest();
 
 
     const QUrl url(QStringLiteral("qrc:/smartpole_screen/Main.qml"));

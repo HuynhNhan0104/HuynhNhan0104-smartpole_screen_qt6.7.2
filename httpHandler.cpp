@@ -20,7 +20,12 @@ HttpHandler::~HttpHandler()
 
 void HttpHandler::sendRequest(){
     QString api_get = api + "?stream=" + QString::number(stream_id);
-    manager->get(QNetworkRequest(QUrl(api_get)));
+    qDebug() << api_get;
+    QNetworkRequest request;
+    request.setUrl(QUrl(api_get));
+    request.setRawHeader("Accept", "application/json");
+    request.setRawHeader("ngrok-skip-browser-warning", "true");
+    manager->get(request);
 }
 
 int HttpHandler::getId() const
@@ -46,7 +51,13 @@ void HttpHandler::setStreamId(int id)
 
 void HttpHandler::sendRequestToAPI(QString api)
 {
-    manager->get(QNetworkRequest(QUrl(api)));
+    QString api_get = api + "?stream=" + QString::number(stream_id);
+    qDebug() << api_get;
+    QNetworkRequest request;
+    request.setUrl(QUrl(api_get));
+    request.setRawHeader("Accept", "application/json");
+    request.setRawHeader("ngrok-skip-browser-warning", "true");
+    manager->get(request);
 }
 
 void HttpHandler::relyRequest(QNetworkReply *reply)
