@@ -21,17 +21,22 @@ class HttpHandler: public QObject
 public:
     QString api = "";
     int id;
+    int stream_id;
     QNetworkAccessManager* manager;
-    HttpHandler(QObject* parent = nullptr, QString api = "", int id = -1);
+    HttpHandler(QObject* parent = nullptr, QString api = "", int id = -1,int stream_id = 1);
     ~HttpHandler();
     // add Q_INVOKABLE to call in qml
     Q_INVOKABLE void sendRequest();
 
     int getId() const;
     void setId(int id);
+    int getStreamId() const;
+    void setStreamId(int id);
     void sendRequestToAPI(QString api);
 
     void relyRequest(QNetworkReply *reply);
+    void getUrlFromStreamId(int stream_id);
+
 signals:
     void receiveLinkFromRequest(const QByteArray &message);
 };

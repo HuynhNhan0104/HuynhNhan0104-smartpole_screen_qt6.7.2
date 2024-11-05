@@ -12,7 +12,8 @@ MqttHandler::MqttHandler(QObject *parent, QString hostName, uint16_t port, QStri
     client->setUsername(userName);
     client->setPassword(password);
     connect(client,&QMqttClient::connected,this,&MqttHandler::onConnected);
-    connect(client,&QMqttClient::messageReceived,this,&MqttHandler::onMessageRecieved);
+    // connect(client,&QMqttClient::messageReceived,this,&MqttHandler::onMessageRecieved);
+    connect(client,&QMqttClient::messageReceived,this,&MqttHandler::onStreamIdRecieved);
     connect(client,&QMqttClient::errorChanged,this, [](QMqttClient::ClientError error) {
         qDebug()<<"[Error] "<< error << "\n";}
     );
@@ -36,6 +37,7 @@ void MqttHandler::onMessageRecieved(const QByteArray &message, const QMqttTopicN
     qDebug()<<"[Recieve]:[from: "<< topic <<"]:[Data: "<< message <<"] \n";
     //json format {"ID": [1, 2, 3], "link":"file:///home/nhan/workspace/img/wave.mp4"}
     // or {"ID": [1, 2, 3], "link":"file:///home/nhan/workspace/img/sea.mp4"}
+    // emit onStreamIdRecieved(message);
     QJsonDocument messageJsonDoc = QJsonDocument::fromJson(message);
     if (messageJsonDoc.isObject()) {
         // convert document to Oject
@@ -54,7 +56,8 @@ void MqttHandler::onMessageRecieved(const QByteArray &message, const QMqttTopicN
         // setMediaPlayerLink(stdLink);
         // if not contain id just ignore
         if( IDList.contains(QJsonValue(this->getId()))){
-            emit recieveFromLinkTopic(qlink);
+            emit recieveLinkFromTopic(qlink);
+
         } else {
             qDebug() << "Ignore, none of this business";
         }
@@ -64,6 +67,31 @@ void MqttHandler::onMessageRecieved(const QByteArray &message, const QMqttTopicN
 
 
 
+}
+void MqttHandler::onStreamIdRecieved(const QByteArray &message, const QMqttTopicName &topic){
+    qDebug()<<"[Recieve]:[from: "<< topic <<"]:[Data: "<< message <<"] \n";
+    QJsonDocument messageJsonDoc = QJsonDocument::fromJson(message);
+    if (messageJsonDoc.isObject()) {
+        QJsonObject messageJsonObj = messageJsonDoc.object();
+        QJsonValue recievedIDList = messageJsonObj["data"];
+        QJsonArray IDList = recievedIDList.toArray();
+        int stream_id = 0;
+        for (const QJsonValue &value : IDList) {
+            QJsonObject obj = value.toObject();
+            qDebug() << obj;
+            if (obj.contains("Pole_ID") && obj["Pole_ID"].toInt() == this->id) {
+                stream_id = obj["Stream_ID"].toInt();
+
+                break; // Exit loop if match is found
+            }
+        }
+        if(stream_id){
+            emit recieveStreamIdFromTopic(stream_id);
+        }
+
+    } else {
+        qWarning() << "[Warning] data recieved is not json \n" ;
+    }
 }
 
 void MqttHandler::subscribeAllTopic()

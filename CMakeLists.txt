@@ -51,8 +51,8 @@ target_link_libraries(appsmartpole_screen
 
 )
 
-# set(CMAKE_INSTALL_PREFIX "/home/nhan/appqt/")
-set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/deloy)
+set(CMAKE_INSTALL_PREFIX "/home/nhan/appqt/")
+# set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/deloy)
 
 
 

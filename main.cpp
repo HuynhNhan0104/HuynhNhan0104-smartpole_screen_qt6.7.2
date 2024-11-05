@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
     // [7] serial mode(test or run)
     // [8] api error request
     int id; //= 0;
+    int stream_id;
     QString broker; // = "io.adafruit.com";
     int port;// 1883;
     QString user;// = "NhanHuynh";
@@ -55,22 +56,17 @@ int main(int argc, char *argv[])
             QJsonDocument jsonDoc(QJsonDocument::fromJson(data));
             QJsonObject jsonObj = jsonDoc.object();
 
-            id      =   jsonObj["id"].toInt();
-            broker  =   jsonObj["broker"].toString();
-            port    =   jsonObj["port"].toInt();
-            user    =   jsonObj["user"].toString();
-            token   =   jsonObj["token"].toString();
-            subTopic   =   jsonObj["subTopic"].toString();
-            pubTopic   =   jsonObj["pubTopic"].toString();
-            bitrate =   jsonObj["bitrate"].toInt();
-            mode    =   jsonObj["mode"].toInt();
-            api     =   jsonObj["api"].toString();
-            // qDebug() << "id: " << id;
-            // qDebug() << "broker:"  << broker;
-            // qDebug() << "user: "  << user;
-            // qDebug() << "port: " << port;
-            // qDebug() << "token: "<< token;
-            // qDebug() << "subTopic: " << subTopic;
+            id          =   jsonObj["id"].toInt();
+            stream_id   =   jsonObj["stream_id"].toInt();
+            broker      =   jsonObj["broker"].toString();
+            port        =   jsonObj["port"].toInt();
+            user        =   jsonObj["user"].toString();
+            token       =   jsonObj["token"].toString();
+            subTopic    =   jsonObj["subTopic"].toString();
+            pubTopic    =   jsonObj["pubTopic"].toString();
+            bitrate     =   jsonObj["bitrate"].toInt();
+            mode        =   jsonObj["mode"].toInt();
+            api         =   jsonObj["api"].toString();
         } else {
             qDebug() << "Couldn't open file, using default config";
         }
@@ -105,11 +101,13 @@ int main(int argc, char *argv[])
 
     // create http handler
     // supply  HttpHandler object context to QML context
-    HttpHandler* httpHandler = new HttpHandler(&app,api);
+    HttpHandler* httpHandler = new HttpHandler(&app,api,stream_id);
     engine.rootContext()->setContextProperty("HttpHandler", httpHandler);
 
     // create connection between mqtt handler and videoController to revcieve message and update link
-    QObject::connect(mqttHandler,&MqttHandler::recieveFromLinkTopic, videoController, &VideoController::onReceiveLinkFromMqtt);
+    // QObject::connect(mqttHandler,&MqttHandler::recieveLinkFromTopic, videoController, &VideoController::onReceiveLinkFromMqtt);
+    QObject::connect(mqttHandler,&MqttHandler::recieveStreamIdFromTopic, httpHandler, &HttpHandler::getUrlFromStreamId);
+
     // create connection between mqtt handler and dashboardController to publist message of sensor to topic
     QObject::connect(dashboardController,&DashboardController::publishDataToTopic, mqttHandler, &MqttHandler::publishSensorData);
 
@@ -126,8 +124,33 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.load(url);
 
+    QObject::connect(&app, &QCoreApplication::aboutToQuit, [=]() {
+        QJsonObject jsonObj;
+        jsonObj["id"]           = id;
+        jsonObj["stream_id"]    = httpHandler->getStreamId();
+        jsonObj["broker"]       = broker;
+        jsonObj["port"]         = port;
+        jsonObj["user"]         = user;
+        jsonObj["token"]        = token;
+        jsonObj["subTopic"]     = subTopic;
+        jsonObj["pubTopic"]     = pubTopic;
+        jsonObj["bitrate"]      = bitrate;
+        jsonObj["mode"]         = mode;
+        jsonObj["api"]          = api;
+        QJsonDocument jsonDoc(jsonObj);
+        QFile file(args[1]);
+        if (!file.open(QIODevice::WriteOnly| QIODevice::Text)) {
+            qWarning() << "Could not open file for writing:" << args[1];
+            return;
+        }
 
+        // Write JSON data to the file
+        file.write(jsonDoc.toJson(QJsonDocument::Indented)); // Indented for readability
+        file.close();
 
+        qDebug() << "JSON written to file on exit successfully:" << args[1];
+
+    });
     return app.exec();
 
 

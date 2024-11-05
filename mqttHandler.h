@@ -27,6 +27,7 @@ public:
 
     void onConnected();
     void onMessageRecieved(const QByteArray &message, const QMqttTopicName &topic);
+    void onStreamIdRecieved(const QByteArray &message, const QMqttTopicName &topic);
     // void onSubcribed(QMqttSubscription::SubscriptionState state);
     void subscribeAllTopic();
 
@@ -48,7 +49,8 @@ public:
     void setId(int id);
 signals:
 
-    void recieveFromLinkTopic(const QString& link);
+    void recieveLinkFromTopic(const QString& link);
+    void recieveStreamIdFromTopic(int stream_id);
 
 private:
     int id;
