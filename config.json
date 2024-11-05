@@ -1,13 +1,13 @@
 {
-    "api": "https://io.adafruit.com/api/v2/NhanHuynh/feeds/mask",
-    "bitrate": 9600,
-    "broker": "io.adafruit.com",
     "id": 1,
-    "mode": 0,
-    "port": 1883,
-    "pubTopic": "NhanHuynh/feeds/fan",
     "stream_id": 5,
-    "subTopic": "NhanHuynh/feeds/link",
+    "user": "GutD",
+    "broker": "io.adafruit.com",
+    "port": 1883,
+    "pubTopic": "GutD/feeds/fan",
+    "subTopic": "GutD/feeds/live-stream",
     "token": "",
-    "user": "NhanHuynh"
+    "bitrate": 9600,
+    "mode": 0,
+    "api": "https://io.adafruit.com/api/v2/NhanHuynh/feeds/mask"
 }
