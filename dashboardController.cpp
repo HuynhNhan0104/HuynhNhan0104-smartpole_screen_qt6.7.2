@@ -1,7 +1,8 @@
 #include "dashboardController.h"
 
-DashboardController::DashboardController(QObject *parent, int baudrate, int mode):
-    QObject( parent )
+DashboardController::DashboardController(QObject *parent, int baudrate, int mode, int id):
+    QObject( parent ),
+    id(id)
 {
     // allocate mem for property (need to deallocate at the destructor)
     AutoConnect autoconnect{};
@@ -178,8 +179,6 @@ void DashboardController::setAtmValue(float newAtmValue)
  *
 */
 
-
-
 float DashboardController::getLightValue() const
 {
     return m_lightValue;
@@ -192,11 +191,17 @@ void DashboardController::setLightValue(float newLightValue)
     m_lightValue = newLightValue;
     emit lightValueChanged();
 }
+int DashboardController::getId() const {
+    return this->id;
+}
+void DashboardController::setId(int id){
+    this->id = id;
+}
 
 QByteArray  DashboardController::exportDataToJsonObject()
 {
     QJsonObject valueObject;
-    valueObject["ID"] = "1";
+    valueObject["ID"] = this->id;
     qint64 currentTimestamp = QDateTime::currentMSecsSinceEpoch();
     valueObject["timestamp"] = currentTimestamp;
 

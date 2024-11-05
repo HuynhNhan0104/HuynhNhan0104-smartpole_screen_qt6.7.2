@@ -39,7 +39,7 @@ public:
         RUN
     };
 
-    explicit DashboardController(QObject *parent = nullptr, int baudrate = 9600, int mode = TEST);
+    explicit DashboardController(QObject *parent = nullptr, int baudrate = 9600, int mode = TEST, int id = -1);
     ~DashboardController();
 
 
@@ -69,6 +69,8 @@ public:
     void setLightValue(float newLightValue);
 
     QByteArray exportDataToJsonObject();
+    int getId() const; 
+    void setId(int id);
 
 signals:
     void pm25ValueChanged();
@@ -81,7 +83,7 @@ signals:
     void publishDataToTopic(const QByteArray &message);
 
 private:
-
+    int id;
     QTimer *timer ;
     Serial_Port* serialPort = nullptr;
     Serial_Interface* serialInterface = nullptr;

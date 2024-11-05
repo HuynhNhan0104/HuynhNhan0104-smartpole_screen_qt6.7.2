@@ -1,7 +1,9 @@
 #include "httpHandler.h"
 
 
-HttpHandler::HttpHandler(QObject *parent, QString api): api(api)
+HttpHandler::HttpHandler(QObject *parent, QString api, int id):
+    api(api),
+    id(id)
 {
     manager = new QNetworkAccessManager(this);
     connect(manager, &QNetworkAccessManager::finished, this, &HttpHandler::relyRequest);
@@ -18,6 +20,16 @@ HttpHandler::~HttpHandler()
 void HttpHandler::sendRequest()
 {
     manager->get(QNetworkRequest(QUrl(api)));
+}
+
+int HttpHandler::getId() const
+{
+    return this->id;
+}
+
+void HttpHandler::setId(int id)
+{
+    this->id = id;
 }
 
 void HttpHandler::sendRequestToAPI(QString api)

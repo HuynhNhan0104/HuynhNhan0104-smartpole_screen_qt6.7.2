@@ -20,11 +20,15 @@ class HttpHandler: public QObject
 
 public:
     QString api = "";
+    int id;
     QNetworkAccessManager* manager;
-    HttpHandler(QObject* parent = nullptr, QString api = "");
+    HttpHandler(QObject* parent = nullptr, QString api = "", int id = -1);
     ~HttpHandler();
     // add Q_INVOKABLE to call in qml
     Q_INVOKABLE void sendRequest();
+
+    int getId() const;
+    void setId(int id);
     void sendRequestToAPI(QString api);
 
     void relyRequest(QNetworkReply *reply);

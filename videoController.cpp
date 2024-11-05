@@ -2,8 +2,9 @@
 
 // {"ID": [1, 2, 3], "link":"https://www.twitch.tv/rivers_gg_waitingroom"}
 
-VideoController::VideoController(QObject *parent):
-    QObject( parent )
+VideoController::VideoController(QObject *parent,int id):
+    QObject( parent ),
+    id(id)
 
 {
     const std::string defaultStdLink = defaultLink.toStdString();
@@ -115,6 +116,12 @@ QString VideoController::getQuality(){
     return quality;
 }
 
+int VideoController::getId() const {
+    return this->id;
+}
+void VideoController::setId(int id){
+    this->id = id;
+}
 
 
 void VideoController::setDefaultLink(const char* newDefaultLink){
@@ -128,8 +135,7 @@ QString VideoController::getDefaultLink(){
     return defaultLink;
 }
 
-void VideoController::onReceiveLinkFromHttp(const QByteArray &message)
-{
+void VideoController::onReceiveLinkFromHttp(const QByteArray &message){
     QJsonDocument doc = QJsonDocument::fromJson(message);
     QJsonObject response = doc.object();
     QString link = response["last_value"].toString();
@@ -137,28 +143,6 @@ void VideoController::onReceiveLinkFromHttp(const QByteArray &message)
     // setMediaPlayerLink(link.toStdString());
     setLink(link);
 }
-void VideoController::onReceiveLinkFromMqtt(const QByteArray &message)
-{
-    QJsonDocument messageJsonDoc = QJsonDocument::fromJson(message);
-    if (messageJsonDoc.isObject()) {
-        // convert document to Oject
-        QJsonObject messageJsonObj = messageJsonDoc.object();
-
-        // Get json value from key
-        QJsonValue recievedIDList = messageJsonObj["ID"];
-        QJsonValue recievedLink = messageJsonObj["link"];
-
-        // Convert type from json to appropriated value
-        QJsonArray IDList = recievedIDList.toArray();
-        QString qlink = recievedLink.toString();
-
-        // parse m3u8 file
-        const std::string stdLink = qlink.toStdString();
-        qDebug() << "link received: " << stdLink;
-        // setMediaPlayerLink(stdLink);
-        setLink(stdLink);
-    }
-    else{
-        qWarning() << "[Warning] data recieved is not json \n" ;
-    }
+void VideoController::onReceiveLinkFromMqtt(const QString& link){
+    setLink(link);
 }

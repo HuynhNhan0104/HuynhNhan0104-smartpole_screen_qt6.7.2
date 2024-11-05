@@ -51,11 +51,14 @@ target_link_libraries(appsmartpole_screen
 
 )
 
-set(CMAKE_INSTALL_PREFIX "/home/nhan/appqt/")
+# set(CMAKE_INSTALL_PREFIX "/home/nhan/appqt/")
+set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/deloy)
+
+
 
 include(GNUInstallDirs)
 install(TARGETS appsmartpole_screen
-    BUNDLE DESTINATION ${CMAKE_INSTALL_PREFIX}
+    BUNDLE DESTINATION .
     # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )

@@ -2,8 +2,9 @@
 
 
 
-MqttHandler::MqttHandler(QObject *parent, QString hostName, uint16_t port, QString  userName,QString password):
+MqttHandler::MqttHandler(QObject *parent, QString hostName, uint16_t port, QString  userName,QString password,int id):
     QObject( parent ),
+    id(id),
     client( new QMqttClient(this))
 {
     client->setHostname(hostName);
@@ -35,7 +36,32 @@ void MqttHandler::onMessageRecieved(const QByteArray &message, const QMqttTopicN
     qDebug()<<"[Recieve]:[from: "<< topic <<"]:[Data: "<< message <<"] \n";
     //json format {"ID": [1, 2, 3], "link":"file:///home/nhan/workspace/img/wave.mp4"}
     // or {"ID": [1, 2, 3], "link":"file:///home/nhan/workspace/img/sea.mp4"}
-    emit recieveFromLinkTopic(message);
+    QJsonDocument messageJsonDoc = QJsonDocument::fromJson(message);
+    if (messageJsonDoc.isObject()) {
+        // convert document to Oject
+        QJsonObject messageJsonObj = messageJsonDoc.object();
+
+        // Get json value from key
+        QJsonValue recievedIDList = messageJsonObj["ID"];
+        QJsonValue recievedLink = messageJsonObj["link"];
+
+        // Convert type from json to appropriated value
+        QJsonArray IDList = recievedIDList.toArray();
+        QString qlink = recievedLink.toString();
+        qDebug() << "ID LIST " << IDList;
+        // parse m3u8 file
+        qDebug() << "link received: " << qlink;
+        // setMediaPlayerLink(stdLink);
+        // if not contain id just ignore
+        if( IDList.contains(QJsonValue(this->getId()))){
+            emit recieveFromLinkTopic(qlink);
+        } else {
+            qDebug() << "Ignore, none of this business";
+        }
+    } else {
+        qWarning() << "[Warning] data recieved is not json \n" ;
+    }
+
 
 
 }
@@ -109,4 +135,14 @@ void MqttHandler::publishSensorData(const QByteArray &message)
         qDebug() <<"PUBLISH FAIL" << message;
     }
 
+}
+
+int MqttHandler::getId() const
+{
+    return this->id;
+}
+
+void MqttHandler::setId(int id)
+{
+    this->id = id;
 }

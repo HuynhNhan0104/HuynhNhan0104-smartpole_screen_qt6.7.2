@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 
 
     // create mqtt handler
-    MqttHandler* mqttHandler  =  new MqttHandler(&app,broker,port,user,token);
+    MqttHandler* mqttHandler  =  new MqttHandler(&app,broker,port,user,token,id);
     mqttHandler->addTopic(subTopic);
     mqttHandler->setPublishTopic(pubTopic);
 
@@ -93,12 +93,12 @@ int main(int argc, char *argv[])
 
     // supply  DashboardController object context to QML context
     // run in "TEST" OR "RUN" Mode
-    DashboardController* dashboardController =  new DashboardController(&app,bitrate,mode ? (DashboardController::RUN):(DashboardController::TEST));
+    DashboardController* dashboardController =  new DashboardController(&app,bitrate,mode ? (DashboardController::RUN):(DashboardController::TEST),id);
     engine.rootContext()->setContextProperty("DashboardController", dashboardController);
 
     // supply VideoController  object context to QML context
     // default link when starting is : "https://live4.thvli.vn/Ao-O3eV678ehY8Riwr6BTg/1721556483/thvli/thvl1-abr/thvl111220/thvl1-480p/chunks.m3u8"
-    VideoController* videoController =  new VideoController(&app);
+    VideoController* videoController =  new VideoController(&app,id);
     //add topic want to subcribe here
     // videoController->addTopic("NhanHuynh/feeds/link");
     engine.rootContext()->setContextProperty("VideoController", videoController);

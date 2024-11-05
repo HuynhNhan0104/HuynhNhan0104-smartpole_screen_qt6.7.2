@@ -19,7 +19,8 @@ public:
         QString hostName = "",
         uint16_t port = 1880,
         QString userName = "",
-        QString  password = ""
+        QString  password = "",
+        int id = -1
     );
 
     ~MqttHandler();
@@ -42,11 +43,15 @@ public:
     void clearSubscriptionsManager();
     int publish(const QString &topic, const QByteArray &message, int qos, bool retain = true);
     void publishSensorData(const QByteArray &message);
+
+    int getId() const;
+    void setId(int id);
 signals:
 
-    void recieveFromLinkTopic(const QByteArray &message);
+    void recieveFromLinkTopic(const QString& link);
 
 private:
+    int id;
     QString publishTopic = "NhanHuynh/feeds/fan";
     QList<QMqttTopicFilter> topics;
     QList<QMqttSubscription*> subcriptionsManager;
