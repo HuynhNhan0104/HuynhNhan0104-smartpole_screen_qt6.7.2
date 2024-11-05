@@ -51,10 +51,9 @@ void HttpHandler::setStreamId(int id)
 
 void HttpHandler::sendRequestToAPI(QString api)
 {
-    QString api_get = api + "?stream=" + QString::number(stream_id);
-    qDebug() << api_get;
+
     QNetworkRequest request;
-    request.setUrl(QUrl(api_get));
+    request.setUrl(QUrl(api));
     request.setRawHeader("Accept", "application/json");
     request.setRawHeader("ngrok-skip-browser-warning", "true");
     manager->get(request);
