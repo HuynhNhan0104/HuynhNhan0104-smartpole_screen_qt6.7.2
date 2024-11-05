@@ -18,9 +18,9 @@ HttpHandler::~HttpHandler()
     delete manager;
 }
 
-void HttpHandler::sendRequest()
-{
-    manager->get(QNetworkRequest(QUrl(api)));
+void HttpHandler::sendRequest(){
+    QString api_get = api + "?stream=" + QString::number(stream_id);
+    manager->get(QNetworkRequest(QUrl(api_get)));
 }
 
 int HttpHandler::getId() const

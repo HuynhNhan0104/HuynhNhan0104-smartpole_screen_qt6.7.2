@@ -115,6 +115,8 @@ int main(int argc, char *argv[])
     QObject::connect(httpHandler,&HttpHandler::receiveLinkFromRequest, videoController, &VideoController::onReceiveLinkFromHttp);
 
 
+
+
     const QUrl url(QStringLiteral("qrc:/smartpole_screen/Main.qml"));
     QObject::connect(
         &engine,
