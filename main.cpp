@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     int bitrate;// = 9600;
     int mode;// = 0;
     QString api;// = "https://io.adafruit.com/api/v2/NhanHuynh/feeds/mask";
-
+    QString defaultLink;
 
     if (args.count() < 2)
     {
