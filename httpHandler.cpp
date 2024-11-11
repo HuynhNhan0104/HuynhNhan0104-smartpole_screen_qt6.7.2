@@ -72,13 +72,13 @@ void HttpHandler::relyRequest(QNetworkReply *reply)
         QByteArray responseData = reply->readAll();
         qDebug()<< responseData ;
         this->count_timeout = 0;
+        if (this->timeout) this->timer->stop();
         this->timeout = false;
-        this->timer->stop();
         emit receiveLinkFromRequest(responseData);
     } else {
-        this->count_timeout++;
         qDebug() << "Error occurred:" << reply->errorString();
         if(this->count_timeout < this->maxTimeout){
+            this->count_timeout++;
             sendRequest();
         }
         else if(this->count_timeout >= this->maxTimeout && this->timeout == false){
@@ -86,6 +86,7 @@ void HttpHandler::relyRequest(QNetworkReply *reply)
             this->timer->start(this->reconnectTime); 
             emit requestTimeout();
         }
+        
     }
     reply->deleteLater();
 
