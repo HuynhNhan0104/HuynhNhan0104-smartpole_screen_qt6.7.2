@@ -67,6 +67,7 @@ void DashboardController::updateValue(){
     setPm10Value(QRandomGenerator::global()->bounded(0, 401));
     setNoiseValue(QRandomGenerator::global()->bounded(0, 141));
     setAtmValue(QRandomGenerator::global()->bounded(0, 101));
+    setLightValue(QRandomGenerator::global()->bounded(0, 2000));
     QByteArray message = exportDataToJsonObject();
     emit publishDataToTopic(message);
 }
