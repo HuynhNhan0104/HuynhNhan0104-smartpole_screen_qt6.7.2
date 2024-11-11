@@ -6,7 +6,7 @@
     "mode": 0,
     "port": 1883,
     "pubTopic": "GutD/feeds/fan",
-    "stream_id": 1,
+    "stream_id": 2,
     "subTopic": "GutD/feeds/live-stream",
     "token": "",
     "user": "GutD"

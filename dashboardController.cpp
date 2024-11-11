@@ -50,6 +50,7 @@ void DashboardController::updateData(){
     setPm10Value(sensor->getValue(ODR_Interface::PM10));
     setNoiseValue(sensor->getValue(ODR_Interface::NOISE));
     setAtmValue(sensor->getValue(ODR_Interface::ATM));
+    setLightValue((sensor->getValue(ODR_Interface::LUXH)<<16)|sensor->getValue(ODR_Interface::LUXH));
 
     QByteArray message = exportDataToJsonObject();
 
@@ -211,6 +212,7 @@ QByteArray  DashboardController::exportDataToJsonObject()
     valueObject["humi"] = getHumidityValue();
     valueObject["noise"] = getNoiseValue();
     valueObject["atm"] = getAtmValue();
+    valueObject["lux"] = getLightValue();
 
 
     QJsonDocument jsonDoc(valueObject);
