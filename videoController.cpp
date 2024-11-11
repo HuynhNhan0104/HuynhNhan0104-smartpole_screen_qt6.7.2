@@ -8,12 +8,12 @@ VideoController::VideoController(QObject *parent,int id, QString defaultLink):
     defaultLink(defaultLink)
 
 {
-    const std::string defaultStdLink = defaultLink.toStdString();
+    // const std::string defaultStdLink = defaultLink.toStdString();
     // setLink("http://192.168.196.76:5000/video_feed");
     // setLink("http://192.168.196.76:5000/video_feed");
 
     // setMediaPlayerLink(defaultStdLink);
-    setLink(defaultLink);
+    // setLink(defaultLink);
     // QString currentQuality = getQuality();
     // QString newM3u8DefaultLink = parseM3u8Url(defaultStdLink , currentQuality.toStdString());
 
