@@ -96,7 +96,7 @@ void HttpHandler::getUrlFromStreamId(int stream_id){
 }
 
 void HttpHandler::periodicConnect(){
-    String api_get = api + "?stream=" + QString::number(stream_id);
+    QString api_get = api + "?stream=" + QString::number(stream_id);
     qDebug() << "request to API: " << api_get;
     sendRequestToAPI(api_get);
 }
