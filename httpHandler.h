@@ -11,6 +11,7 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <cstdlib>
+#include <QTimer>
 
 class HttpHandler: public QObject
 {
