@@ -127,9 +127,21 @@ Window {
         anchors.top: dashboard.bottom
         anchors.left: dashboard.left
         sourceLink: VideoController.link
+        Timer {
+            id: checkStatusTimer
+            interval: 10000 // Kiểm tra mỗi giây
+            repeat: true
+            running: false // Timer bắt đầu ở trạng thái tắt
+            onTriggered: {
+                HttpHandler.sendRequest(); // Gọi request khi Timer kích hoạt
+            }
+        }
         onMediaStatusChanged:{
             if (videoView.mediastatus === MediaPlayer.InvalidMedia || videoView.mediastatus === MediaPlayer.EndOfMedia ){
-                HttpHandler.sendRequest();
+                // HttpHandler.sendRequest();
+                checkStatusTimer.start();
+            } else {
+                checkStatusTimer.stop();
             }
 
         }
