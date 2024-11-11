@@ -72,14 +72,17 @@ void HttpHandler::relyRequest(QNetworkReply *reply)
         QByteArray responseData = reply->readAll();
         qDebug()<< responseData ;
         this->count_timeout = 0;
-        this->timeout = true;
-
+        this->timeout = false;
         this->timer->stop();
         emit receiveLinkFromRequest(responseData);
     } else {
         this->count_timeout++;
         qDebug() << "Error occurred:" << reply->errorString();
-        if(this->count_timeout >= this->maxTimeout && this->timeout == false){
+        if(this->count_timeout < this->maxTimeout){
+            sendRequest();
+        }
+        else if(this->count_timeout >= this->maxTimeout && this->timeout == false){
+            this->timeout = true;
             this->timer->start(this->reconnectTime); 
             emit requestTimeout();
         }
@@ -96,7 +99,5 @@ void HttpHandler::getUrlFromStreamId(int stream_id){
 }
 
 void HttpHandler::periodicConnect(){
-    QString api_get = api + "?stream=" + QString::number(stream_id);
-    qDebug() << "request to API: " << api_get;
-    sendRequestToAPI(api_get);
+    sendRequest();
 }
