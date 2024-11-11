@@ -54,10 +54,10 @@ void DashboardController::updateData(){
     uint16_t light_low = sensor->getValue(ODR_Interface::LUXL);
     // qDebug()<< "light high: " << light_high ;
     // qDebug()<< "light low: " << light_low;
-    // qDebug()<< "light value : "<< (float) light_high << 16 | light_low;
+    // qDebug()<< "light value : "<< (float) ( light_high << 16 | light_low);
 
 
-    setLightValue((float) light_high<<16 | light_low);
+    setLightValue(light_high<<16 | light_low);
 
     QByteArray message = exportDataToJsonObject();
 
