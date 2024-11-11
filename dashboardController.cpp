@@ -50,7 +50,10 @@ void DashboardController::updateData(){
     setPm10Value(sensor->getValue(ODR_Interface::PM10));
     setNoiseValue(sensor->getValue(ODR_Interface::NOISE));
     setAtmValue(sensor->getValue(ODR_Interface::ATM));
-    setLightValue((sensor->getValue(ODR_Interface::LUXH)<<16)|sensor->getValue(ODR_Interface::LUXH));
+    uint32_t light_high = sensor->getValue(ODR_Interface::LUXH);
+    uint32_t light_low = sensor->getValue(ODR_Interface::LUXH);
+
+    setLightValue((float) (light_high<<16 | light_low));
 
     QByteArray message = exportDataToJsonObject();
 
