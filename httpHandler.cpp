@@ -1,13 +1,19 @@
 #include "httpHandler.h"
 
 
-HttpHandler::HttpHandler(QObject *parent, QString api, int id, int stream_id):
+HttpHandler::HttpHandler(QObject *parent, QString api, int id, int stream_id, int maxTimeout):
     api(api),
     id(id),
-    stream_id(stream_id)
+    stream_id(stream_id),
+    maxTimeout(maxTimeout)
 {
     manager = new QNetworkAccessManager(this);
     connect(manager, &QNetworkAccessManager::finished, this, &HttpHandler::relyRequest);
+    count_timeout = 0;
+    timeout = false;
+    reconnectTime = 30000;
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &HttpHandler::periodicConnect);
 
 }
 
@@ -16,6 +22,7 @@ HttpHandler::HttpHandler(QObject *parent, QString api, int id, int stream_id):
 HttpHandler::~HttpHandler()
 {
     delete manager;
+    delete timer;
 }
 
 void HttpHandler::sendRequest(){
@@ -64,10 +71,18 @@ void HttpHandler::relyRequest(QNetworkReply *reply)
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray responseData = reply->readAll();
         qDebug()<< responseData ;
+        this->count_timeout = 0;
+        this->timeout = true;
 
+        this->timer->stop();
         emit receiveLinkFromRequest(responseData);
     } else {
+        this->count_timeout++;
         qDebug() << "Error occurred:" << reply->errorString();
+        if(this->count_timeout >= this->maxTimeout && this->timeout == false){
+            this->timer->start(this->reconnectTime); 
+            emit requestTimeout();
+        }
     }
     reply->deleteLater();
 
@@ -80,3 +95,8 @@ void HttpHandler::getUrlFromStreamId(int stream_id){
     sendRequestToAPI(api_get);
 }
 
+void HttpHandler::periodicConnect(){
+    String api_get = api + "?stream=" + QString::number(stream_id);
+    qDebug() << "request to API: " << api_get;
+    sendRequestToAPI(api_get);
+}

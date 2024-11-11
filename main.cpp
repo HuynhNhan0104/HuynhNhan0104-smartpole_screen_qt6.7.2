@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
             bitrate     =   jsonObj["bitrate"].toInt();
             mode        =   jsonObj["mode"].toInt();
             api         =   jsonObj["api"].toString();
+            defaultLink =   jsonObj["defaultLink"].toString();
         } else {
             qDebug() << "Couldn't open file, using default config";
         }
@@ -94,7 +95,7 @@ int main(int argc, char *argv[])
 
     // supply VideoController  object context to QML context
     // default link when starting is : "https://live4.thvli.vn/Ao-O3eV678ehY8Riwr6BTg/1721556483/thvli/thvl1-abr/thvl111220/thvl1-480p/chunks.m3u8"
-    VideoController* videoController =  new VideoController(&app,id);
+    VideoController* videoController =  new VideoController(&app, id, defaultLink);
     //add topic want to subcribe here
     // videoController->addTopic("NhanHuynh/feeds/link");
     engine.rootContext()->setContextProperty("VideoController", videoController);
@@ -114,6 +115,7 @@ int main(int argc, char *argv[])
     // create connection between http handler and videoController to publist message of sensor to topic
     QObject::connect(httpHandler,&HttpHandler::receiveLinkFromRequest, videoController, &VideoController::onReceiveLinkFromHttp);
     httpHandler->sendRequest();
+    QObject::connect(httpHandler,&HttpHandler::requestTimeout, videoController, &VideoController::onRequestTimeout);
 
 
     const QUrl url(QStringLiteral("qrc:/smartpole_screen/Main.qml"));
@@ -138,6 +140,7 @@ int main(int argc, char *argv[])
         jsonObj["bitrate"]      = bitrate;
         jsonObj["mode"]         = mode;
         jsonObj["api"]          = api;
+        jsonObj["defaultLink"]  = defaultLink;
         QJsonDocument jsonDoc(jsonObj);
         QFile file(args[1]);
         if (!file.open(QIODevice::WriteOnly| QIODevice::Text)) {

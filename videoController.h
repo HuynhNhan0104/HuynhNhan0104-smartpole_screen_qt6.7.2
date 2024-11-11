@@ -22,7 +22,8 @@ public:
 
     explicit VideoController(
         QObject* parent = nullptr, 
-        int id = -1
+        int id = -1,
+        QString defaultLink = ""
     );
     ~VideoController();
 
@@ -50,6 +51,7 @@ public:
 
     void onReceiveLinkFromMqtt(const QString& link);
     void onReceiveLinkFromHttp(const QByteArray &message);
+    void onRequestTimeout();
 
 signals:
     void LinkChanged();

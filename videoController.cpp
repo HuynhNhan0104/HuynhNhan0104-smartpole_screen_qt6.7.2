@@ -2,9 +2,10 @@
 
 // {"ID": [1, 2, 3], "link":"https://www.twitch.tv/rivers_gg_waitingroom"}
 
-VideoController::VideoController(QObject *parent,int id):
+VideoController::VideoController(QObject *parent,int id, QString defaultLink):
     QObject( parent ),
-    id(id)
+    id(id),
+    defaultLink(defaultLink)
 
 {
     const std::string defaultStdLink = defaultLink.toStdString();
@@ -12,7 +13,7 @@ VideoController::VideoController(QObject *parent,int id):
     // setLink("http://192.168.196.76:5000/video_feed");
 
     // setMediaPlayerLink(defaultStdLink);
-    setLink(defaultStdLink);
+    setLink(defaultLink);
     // QString currentQuality = getQuality();
     // QString newM3u8DefaultLink = parseM3u8Url(defaultStdLink , currentQuality.toStdString());
 
@@ -145,4 +146,9 @@ void VideoController::onReceiveLinkFromHttp(const QByteArray &message){
 }
 void VideoController::onReceiveLinkFromMqtt(const QString& link){
     setLink(link);
+}
+
+
+void VideoController::onRequestTimeout(){
+    setLink(this->defaultLink);
 }
