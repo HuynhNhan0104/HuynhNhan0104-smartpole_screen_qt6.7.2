@@ -56,7 +56,7 @@ Item {
     property color lowerColor: "green"
     property color middleColor: "orange"
     property color  upperColor: "red"
-
+    property color baseColor: "green"
     property color colorBaseOnValue: {
         if (currentValue < lowerThreshold){
             return lowerColor;
@@ -134,7 +134,7 @@ Item {
                 ShapePath {
                     id:progressLine
                     //////add property
-                    strokeColor: colorBaseOnValue
+                    strokeColor:  baseColor
                     strokeWidth: widthLine
                     fillColor: "transparent"
                     fillRule: ShapePath.OddEvenFill
@@ -180,7 +180,7 @@ Item {
             anchors.top: shape.top
             anchors.horizontalCenter: shape.horizontalCenter
             anchors.topMargin: shape.height*0.3
-            color: colorBaseOnValue
+            color:  baseColor
 
             text: qsTr("%1").arg(currentValue)
         }
@@ -189,7 +189,7 @@ Item {
             id: unitText
             anchors.top: valueText.bottom
             anchors.horizontalCenter: valueText.horizontalCenter
-            color: colorBaseOnValue
+            color:  baseColor
             font.pointSize: contentTextSize*0.8
             text: qsTr(unitText)
         }

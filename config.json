@@ -1,8 +1,9 @@
 {
     "api": "https://aeee-14-241-225-123.ngrok-free.app/get/linkm3u8",
-    "defaultLink": "",
+    "defaultLink":"file://./video/default2.mp4",
     "bitrate": 9600,
     "broker": "io.adafruit.com",
+    "defaultLink": "",
     "id": 1,
     "mode": 0,
     "port": 1883,

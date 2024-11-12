@@ -16,10 +16,12 @@ DashboardController::DashboardController(QObject *parent, int baudrate, int mode
     if (mode == RUN){
         serialPort->start();
         serialInterface->start();
+        this->updateData();
         connect(timer, &QTimer::timeout, this, &DashboardController::updateData);
 
     }
     else {
+        this->updateValue();
         connect(timer, &QTimer::timeout, this, &DashboardController::updateValue);
     }
 
