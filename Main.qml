@@ -40,7 +40,7 @@ Window {
         {tagName:"Humi",    measuredValue: DashboardController.humidityValue,    unit: "%",       minLimit: 0,  maxLimit: 100,     lowerThreshold: 50,   upperThreshold: 80},
         {tagName:"PM2.5",   measuredValue: DashboardController.pm25Value,        unit: "µm/m3",   minLimit: 0,  maxLimit: 200,    lowerThreshold: 12,  upperThreshold: 35},
         {tagName:"PM10",    measuredValue: DashboardController.pm10Value,        unit: "µm/m3",   minLimit: 0,  maxLimit: 400,    lowerThreshold: 55,  upperThreshold: 155},
-        {tagName:"Atm",     measuredValue: DashboardController.atmValue,         unit: "Kpa",     minLimit: 0,  maxLimit: 120,     lowerThreshold: 40,   upperThreshold: 100},
+        {tagName:"Atm",     measuredValue: DashboardController.atmValue,         unit: "Kpa",     minLimit: 0,  maxLimit: 120,     lowerThreshold: 40,   upperThreshold: 105},
         {tagName:"Noise",   measuredValue: DashboardController.noiseValue,       unit: "dB",      minLimit: 0, maxLimit: 140,     lowerThreshold: 80,   upperThreshold: 120}
     ]
 
