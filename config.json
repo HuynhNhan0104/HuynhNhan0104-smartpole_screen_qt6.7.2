@@ -3,7 +3,7 @@
     "defaultLink":"file://./video/default2.mp4",
     "bitrate": 9600,
     "broker": "io.adafruit.com",
-    "defaultLink": "",
+    // "defaultLink": "",
     "id": 1,
     "mode": 0,
     "port": 1883,
