@@ -5,7 +5,8 @@
 MqttHandler::MqttHandler(QObject *parent, QString hostName, uint16_t port, QString  userName,QString password,int id):
     QObject( parent ),
     id(id),
-    client( new QMqttClient(this))
+    client( new QMqttClient(this)),
+    timer (new QTimer(this))
 {
     client->setHostname(hostName);
     client->setPort(quint16(port));
@@ -15,8 +16,24 @@ MqttHandler::MqttHandler(QObject *parent, QString hostName, uint16_t port, QStri
     // connect(client,&QMqttClient::messageReceived,this,&MqttHandler::onMessageRecieved);
     connect(client,&QMqttClient::messageReceived,this,&MqttHandler::onStreamIdRecieved);
     connect(client,&QMqttClient::errorChanged,this, [](QMqttClient::ClientError error) {
-        qDebug()<<"[Error] "<< error << "\n";}
+        qDebug()<<"[Error] "<< error << "\n";
+    }
     );
+
+    connect(timer, &QTimer::timeout, this, [=](){
+        qDebug()<<"[info] try connect to broker " << "\n";
+        client->connectToHost();
+    });
+    connect(client,&QMqttClient::disconnected,this, [=](){
+        qDebug()<<"[Disconnect]: cannot connect to broker " << "\n";
+        this->timer->start(this->reconnectTime);
+    });
+    connect(client,&QMqttClient::connected,this, [=](){
+        qDebug()<<"[Connected]: connect successfully to broker " << "\n";
+        this->timer->stop();
+    });
+
+
     client->connectToHost();
 }
 

@@ -7,7 +7,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 set(Qt6_DIR )
-
 find_package(Qt6 6.4 REQUIRED COMPONENTS Quick  Mqtt Multimedia)
 find_package(Threads)
 

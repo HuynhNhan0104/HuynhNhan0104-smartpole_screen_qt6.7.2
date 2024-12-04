@@ -20,15 +20,7 @@ class HttpHandler: public QObject
 
 
 public:
-    QString api = "";
-    int id;
-    int stream_id;
-    int count_timeout;
-    bool timeout = false;
-    int maxTimeout;
-    int reconnectTime = 30000;// 30s
-    QTimer* timer = nullptr;
-    QNetworkAccessManager* manager;
+
     HttpHandler(QObject* parent = nullptr, QString api = "", int id = -1,int stream_id = 1, int maxTimeout = 5);
     ~HttpHandler();
     // add Q_INVOKABLE to call in qml
@@ -48,6 +40,16 @@ public:
 signals:
     void receiveLinkFromRequest(const QByteArray &message);
     void requestTimeout();
+private:
+    QString api = "";
+    int id;
+    int stream_id;
+    int count_timeout;
+    bool timeout = false;
+    int maxTimeout;
+    int reconnectTime = 30000;// 30s
+    QTimer* timer = nullptr;
+    QNetworkAccessManager* manager;
 };
 
 #endif // HTTPHANDLER_H

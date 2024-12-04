@@ -1,15 +1,14 @@
 {
-    "api": "https://aeee-14-241-225-123.ngrok-free.app/get/linkm3u8",
-    "defaultLink":"file://./video/default2.mp4",
+    "api": "https://2f80-14-187-46-153.ngrok-free.app/get/linkm3u8",
     "bitrate": 9600,
     "broker": "io.adafruit.com",
-    // "defaultLink": "",
-    "id": 1,
+    "defaultLink": "file:///home/nhan/workspace/QT_PROJECT/smartpole_screen/video/default.mp4",
+    "id": 2,
     "mode": 0,
     "port": 1883,
     "pubTopic": "GutD/feeds/fan",
     "stream_id": 2,
     "subTopic": "GutD/feeds/live-stream",
-    "token": "",
+    "token": "_Vwjm06GuA2joBo9RrscH19uf8DfH",
     "user": "GutD"
 }

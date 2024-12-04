@@ -216,7 +216,7 @@ Window {
             }
         }
         onMediaStatusChanged:{
-            if (videoView.mediastatus === MediaPlayer.InvalidMedia || videoView.mediastatus === MediaPlayer.EndOfMedia ){
+            if (videoView.mediastatus === MediaPlayer.InvalidMedia || videoView.mediastatus === MediaPlayer.EndOfMedia){
                 // HttpHandler.sendRequest();
                 checkStatusTimer.start();
             } else {

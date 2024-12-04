@@ -14,6 +14,14 @@ HttpHandler::HttpHandler(QObject *parent, QString api, int id, int stream_id, in
     reconnectTime = 30000;
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &HttpHandler::periodicConnect);
+    connect(manager,&QNetworkAccessManager::sslErrors,this, [=](QNetworkReply *reply, const QList<QSslError> &errors) {
+        qDebug() << "Lỗi SSL xảy ra:";
+        for (const QSslError &error : errors) {
+            qDebug() << " -" << error.errorString();
+        }
+    });
+
+
 
 }
 
@@ -27,11 +35,12 @@ HttpHandler::~HttpHandler()
 
 void HttpHandler::sendRequest(){
     QString api_get = api + "?stream=" + QString::number(stream_id);
-    qDebug() << api_get;
+    qDebug() << "Request to: "<<api_get;
     QNetworkRequest request;
     request.setUrl(QUrl(api_get));
     request.setRawHeader("Accept", "application/json");
     request.setRawHeader("ngrok-skip-browser-warning", "true");
+    request.setTransferTimeout(5000);
     manager->get(request);
 }
 
@@ -63,12 +72,15 @@ void HttpHandler::sendRequestToAPI(QString api)
     request.setUrl(QUrl(api));
     request.setRawHeader("Accept", "application/json");
     request.setRawHeader("ngrok-skip-browser-warning", "true");
+    request.setTransferTimeout(5000);
     manager->get(request);
 }
 
 void HttpHandler::relyRequest(QNetworkReply *reply)
 {
+
     if (reply->error() == QNetworkReply::NoError) {
+        qDebug() << "No error";
         QByteArray responseData = reply->readAll();
         qDebug()<< responseData ;
         this->count_timeout = 0;
@@ -88,6 +100,7 @@ void HttpHandler::relyRequest(QNetworkReply *reply)
         }
         
     }
+    qDebug() << "counter: " << count_timeout << "timeout : " << timeout;
     reply->deleteLater();
 
 }

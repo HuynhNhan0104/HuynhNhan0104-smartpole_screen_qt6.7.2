@@ -19,7 +19,7 @@ Item {
             autoPlay: true
             loops: MediaPlayer.Infinite
             // bufferSize: 50000
-            // onErrorOccurred: error => console.log('Error occurred:', errorString, error)
+            onErrorOccurred: error => console.log('Error occurred:', errorString, error)
             onMediaStatusChanged: {
                 console.log("Media status changed:", mediaStatus);
                 // mediaStatusChanged(player.mediaStatus);

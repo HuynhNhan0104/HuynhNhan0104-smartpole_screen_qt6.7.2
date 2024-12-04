@@ -9,6 +9,7 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <cstdlib>
+#include <QTimer>
 
 class MqttHandler: public QObject
 {
@@ -53,11 +54,14 @@ signals:
     void recieveStreamIdFromTopic(int stream_id);
 
 private:
+    QTimer* timer;
+    int reconnectTime = 30000;
     int id;
-    QString publishTopic = "NhanHuynh/feeds/fan";
+    QString publishTopic;
     QList<QMqttTopicFilter> topics;
     QList<QMqttSubscription*> subcriptionsManager;
     QMqttClient* client = nullptr;
+
 };
 
 #endif // MQTTHANDLER_H
